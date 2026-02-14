@@ -1,4 +1,4 @@
-import { useAppTheme } from './theme/ThemeContext';
+import { useAppTheme } from './theme/useAppTheme';
 
 export function useColorScheme() {
   const { theme } = useAppTheme();

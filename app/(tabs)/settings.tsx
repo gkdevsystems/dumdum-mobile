@@ -1,47 +1,19 @@
-import { StyleSheet, Switch } from 'react-native';
+import { Switch, Text, View } from 'react-native';
 
-import { Text, View } from '@/components/Themed';
-import { useAppTheme } from '@/components/theme/ThemeContext';
+import { useAppTheme } from '@/components/theme/useAppTheme';
 
 export default function SettingsScreen() {
   const { theme, toggleTheme } = useAppTheme();
   const isDark = theme === 'dark';
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
-      <View style={styles.row}>
-        <Text style={styles.label}>Dark Mode</Text>
+    <View className="flex-1 bg-background px-5 pt-8">
+      <Text className="mb-6 text-2xl font-semibold text-app-foreground">Settings</Text>
+      <View className="flex-row items-center justify-between py-3">
+        <Text className="text-lg text-app-foreground">Dark Mode</Text>
         <Switch value={isDark} onValueChange={toggleTheme} />
       </View>
-      <Text style={styles.current}>Current theme: {isDark ? 'Dark' : 'Light'}</Text>
+      <Text className="mt-3 text-sm text-app-muted">Current theme: {isDark ? 'Dark' : 'Light'}</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 32,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '600',
-    marginBottom: 24,
-  },
-  row: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-  },
-  label: {
-    fontSize: 18,
-  },
-  current: {
-    fontSize: 14,
-    marginTop: 12,
-    opacity: 0.8,
-  },
-});
