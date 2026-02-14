@@ -218,8 +218,8 @@ export default function LandingScreen() {
                   transform: [{ translateY: heroBackgroundTranslateY }, { scale: transitionScale }],
                 }}
               />
-              <View className="absolute inset-0 bg-black/22" />
-              <View className="absolute inset-0 bg-orange-900/10" />
+              <View className="absolute inset-0 bg-black/12" />
+              <View className="absolute inset-0 bg-orange-900/5" />
               <Animated.View
                 className="absolute -right-10 -top-10 h-44 w-44 rounded-full border border-white/25"
                 style={{ transform: [{ rotate: ringRotate }] }}
@@ -358,7 +358,7 @@ export default function LandingScreen() {
 
           <View className="mt-8">
             <Pressable
-              className="flex-row items-center justify-center rounded-3xl border border-app-primary/60 bg-app-primary px-6 py-4 shadow-lg shadow-app-primary/30 active:opacity-90"
+              className="flex-row items-center justify-center rounded-3xl border border-rose-300 bg-rose-400 px-6 py-4 shadow-lg shadow-rose-200/60 active:opacity-90"
               onPress={() => router.replace('/(tabs)')}>
               <View className="mr-3 h-8 w-8 items-center justify-center rounded-full bg-white/20">
                 <FontAwesome name="heart" size={12} color="#ffffff" />
