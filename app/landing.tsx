@@ -8,9 +8,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@/components/theme/useAppTheme';
 
 const HERO_IMAGES = [
-  'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=80',
-  'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=1400&q=80',
-  'https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1400&q=80',
+  'https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=1600',
+  'https://images.pexels.com/photos/24334706/pexels-photo-24334706.jpeg?auto=compress&cs=tinysrgb&w=1600',
+  'https://images.pexels.com/photos/20015030/pexels-photo-20015030.jpeg?auto=compress&cs=tinysrgb&w=1600',
 ];
 
 export default function LandingScreen() {
@@ -20,6 +20,7 @@ export default function LandingScreen() {
   const driftAnim = useRef(new Animated.Value(0)).current;
   const spinAnim = useRef(new Animated.Value(0)).current;
   const imageTransition = useRef(new Animated.Value(0)).current;
+  const heartAnim = useRef(new Animated.Value(0)).current;
   const scrollY = useRef(new Animated.Value(0)).current;
   const currentImageRef = useRef(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -67,6 +68,23 @@ export default function LandingScreen() {
       ])
     ).start();
 
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(heartAnim, {
+          toValue: 1,
+          duration: 3600,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(heartAnim, {
+          toValue: 0,
+          duration: 3600,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
     Animated.timing(contentAnim, {
       toValue: 1,
       duration: 800,
@@ -90,7 +108,7 @@ export default function LandingScreen() {
     }, 4200);
 
     return () => clearInterval(timer);
-  }, [contentAnim, driftAnim, glowAnim, imageTransition, spinAnim]);
+  }, [contentAnim, driftAnim, glowAnim, heartAnim, imageTransition, spinAnim]);
 
   const contentTranslate = contentAnim.interpolate({
     inputRange: [0, 1],
@@ -132,11 +150,26 @@ export default function LandingScreen() {
     inputRange: [0, 1],
     outputRange: [0, 1],
   });
-  const transitionTranslateX = imageTransition.interpolate({
+  const transitionScale = imageTransition.interpolate({
     inputRange: [0, 1],
-    outputRange: [42, 0],
+    outputRange: [1.08, 1],
   });
-
+  const heartTranslateY = heartAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [8, -12],
+  });
+  const heartOpacity = heartAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.4, 0.9],
+  });
+  const titleScale = heartAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 1.06],
+  });
+  const titleTranslateY = heartAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, -2],
+  });
   return (
     <SafeAreaView className="flex-1 bg-app-background">
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
@@ -182,11 +215,11 @@ export default function LandingScreen() {
                 resizeMode="cover"
                 style={{
                   opacity: transitionOpacity,
-                  transform: [{ translateY: heroBackgroundTranslateY }, { translateX: transitionTranslateX }, { scale: heroScale }],
+                  transform: [{ translateY: heroBackgroundTranslateY }, { scale: transitionScale }],
                 }}
               />
-              <View className="absolute inset-0 bg-black/38" />
-              <View className="absolute inset-0 bg-orange-900/20" />
+              <View className="absolute inset-0 bg-black/22" />
+              <View className="absolute inset-0 bg-orange-900/10" />
               <Animated.View
                 className="absolute -right-10 -top-10 h-44 w-44 rounded-full border border-white/25"
                 style={{ transform: [{ rotate: ringRotate }] }}
@@ -196,10 +229,50 @@ export default function LandingScreen() {
                 style={{ transform: [{ translateY: chipDrift }] }}
               />
               <Animated.View
+                className="absolute right-8 top-16"
+                style={{ opacity: heartOpacity, transform: [{ translateY: heartTranslateY }] }}>
+                <FontAwesome name="heart" size={16} color="#fb7185" />
+              </Animated.View>
+              <Animated.View
+                className="absolute right-20 top-20"
+                style={{ opacity: heartOpacity, transform: [{ translateY: heartTranslateY }] }}>
+                <FontAwesome name="heart" size={9} color="#fda4af" />
+              </Animated.View>
+              <Animated.View
+                className="absolute right-16 top-12"
+                style={{ opacity: heartOpacity, transform: [{ translateY: chipDrift }] }}>
+                <FontAwesome name="heart" size={11} color="#fda4af" />
+              </Animated.View>
+              <Animated.View
+                className="absolute right-12 top-24"
+                style={{ opacity: heartOpacity, transform: [{ translateY: chipDrift }] }}>
+                <FontAwesome name="heart" size={10} color="#fecdd3" />
+              </Animated.View>
+              <Animated.View
+                className="absolute left-10 top-20"
+                style={{ opacity: heartOpacity, transform: [{ translateY: heartTranslateY }] }}>
+                <FontAwesome name="heart" size={9} color="#fda4af" />
+              </Animated.View>
+              <Animated.View
+                className="absolute left-16 top-30"
+                style={{ opacity: heartOpacity, transform: [{ translateY: chipDrift }] }}>
+                <FontAwesome name="heart" size={12} color="#fb7185" />
+              </Animated.View>
+              <Animated.View
+                className="absolute left-24 top-14"
+                style={{ opacity: heartOpacity, transform: [{ translateY: heartTranslateY }] }}>
+                <FontAwesome name="heart" size={8} color="#fecdd3" />
+              </Animated.View>
+              <Animated.View
+                className="absolute left-8 bottom-24"
+                style={{ opacity: heartOpacity, transform: [{ translateY: chipDrift }] }}>
+                <FontAwesome name="heart" size={10} color="#fda4af" />
+              </Animated.View>
+              <Animated.View
                 className="absolute bottom-4 right-5 rounded-full bg-white/20 px-3 py-1.5"
                 style={{ opacity: transitionOpacity }}>
                 <Text className="text-[10px] font-semibold uppercase tracking-[2px] text-white">
-                  Real Ceremonies
+                  Verified Profiles
                 </Text>
               </Animated.View>
 
@@ -209,14 +282,28 @@ export default function LandingScreen() {
                 <Text className="text-[10px] font-semibold uppercase tracking-[2px] text-white">Family Verified</Text>
               </Animated.View>
 
-              <Animated.View
-                className="absolute right-4 top-4 rounded-full bg-white/22 px-3 py-1.5"
-                style={{ transform: [{ translateY: heroDrift }] }}>
-                <Text className="text-[10px] font-semibold uppercase tracking-[2px] text-white">Kundli Ready</Text>
-              </Animated.View>
-
-              <View className="absolute bottom-5 left-5 right-5">
-                <Text className="text-3xl font-black leading-9 text-white">Tradition Meets Chemistry</Text>
+              <View className="absolute bottom-20 left-5 right-5">
+                <Animated.View className="relative self-start items-start" style={{ transform: [{ scale: titleScale }, { translateY: titleTranslateY }] }}>
+                  <Text
+                    className="text-[36px] font-black leading-[40px] tracking-[0.2px] text-orange-100"
+                    style={{
+                      textShadowColor: 'rgba(0, 0, 0, 0.45)',
+                      textShadowOffset: { width: 0, height: 1 },
+                      textShadowRadius: 6,
+                    }}>
+                    Suyamvaram
+                  </Text>
+                  <Animated.View
+                    className="absolute -right-5 -top-1"
+                    style={{ opacity: heartOpacity, transform: [{ translateY: heartTranslateY }] }}>
+                    <FontAwesome name="heart" size={13} color="#fda4af" />
+                  </Animated.View>
+                  <Animated.View
+                    className="absolute -left-3 top-7"
+                    style={{ opacity: heartOpacity, transform: [{ translateY: chipDrift }] }}>
+                    <FontAwesome name="heart" size={10} color="#fecdd3" />
+                  </Animated.View>
+                </Animated.View>
                 <Text className="mt-1 text-sm font-medium text-white/90">
                   For Indian families seeking serious, value-aligned matches.
                 </Text>
