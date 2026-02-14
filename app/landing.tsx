@@ -358,16 +358,27 @@ export default function LandingScreen() {
 
           <View className="mt-8">
             <Pressable
-              className="flex-row items-center justify-center rounded-2xl bg-app-primary px-6 py-4 active:opacity-90"
+              className="flex-row items-center justify-center rounded-3xl border border-app-primary/60 bg-app-primary px-6 py-4 shadow-lg shadow-app-primary/30 active:opacity-90"
               onPress={() => router.replace('/(tabs)')}>
-              <Text className="text-base font-bold text-white">Get Started</Text>
-              <FontAwesome name="arrow-right" size={14} color="#ffffff" style={{ marginLeft: 8 }} />
+              <View className="mr-3 h-8 w-8 items-center justify-center rounded-full bg-white/20">
+                <FontAwesome name="heart" size={12} color="#ffffff" />
+              </View>
+              <Text className="text-base font-bold tracking-[0.3px] text-white">Get Started</Text>
+              <FontAwesome name="arrow-right" size={14} color="#ffffff" style={{ marginLeft: 10 }} />
             </Pressable>
 
             <Pressable
-              className="mt-3 items-center rounded-2xl border border-app-border bg-app-card px-6 py-4 active:opacity-80"
+              className="mt-3 flex-row items-center justify-center rounded-3xl border border-app-border bg-app-card px-6 py-4 active:opacity-80"
               onPress={() => router.replace('/(tabs)')}>
-              <Text className="text-sm font-semibold text-app-foreground">Explore Community Matches</Text>
+              <FontAwesome
+                name="users"
+                size={13}
+                color={theme === 'dark' ? '#fdba74' : '#ea580c'}
+                style={{ marginRight: 8 }}
+              />
+              <Text className="text-sm font-semibold tracking-[0.2px] text-app-foreground">
+                Explore Community Matches
+              </Text>
             </Pressable>
 
             <Text className="mt-4 text-center text-xs text-app-muted">
