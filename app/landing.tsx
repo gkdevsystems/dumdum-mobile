@@ -172,7 +172,12 @@ export default function LandingScreen() {
   });
 
   const handleGetStarted = () => {
-    console.log('[ROUTE][Landing] Get Started pressed -> /register');
+    console.log('[ROUTE][Landing] Get Started pressed -> /(register-flow)/mobile');
+    router.push('/(register-flow)/mobile' as never);
+  };
+
+  const handleOpenLegacyRegister = () => {
+    console.log('[ROUTE][Landing] Legacy Register pressed -> /register');
     router.push('/register' as never);
   };
 
@@ -374,8 +379,22 @@ export default function LandingScreen() {
               <View className="mr-3 h-8 w-8 items-center justify-center rounded-full bg-white/20">
                 <FontAwesome name="heart" size={12} color="#ffffff" />
               </View>
-              <Text className="text-base font-bold tracking-[0.3px] text-white">Get Started</Text>
+              <Text className="text-base font-bold tracking-[0.3px] text-white">Start New Registration</Text>
               <FontAwesome name="arrow-right" size={14} color="#ffffff" style={{ marginLeft: 10 }} />
+            </Pressable>
+
+            <Pressable
+              className="mt-3 flex-row items-center justify-center rounded-3xl border border-app-border bg-app-card px-6 py-4 active:opacity-80"
+              onPress={handleOpenLegacyRegister}>
+              <FontAwesome
+                name="clone"
+                size={13}
+                color={theme === 'dark' ? '#fdba74' : '#ea580c'}
+                style={{ marginRight: 8 }}
+              />
+              <Text className="text-sm font-semibold tracking-[0.2px] text-app-foreground">
+                Open Existing Register (Compare)
+              </Text>
             </Pressable>
 
             <Pressable
