@@ -15,6 +15,7 @@ const initialDraft: RegistrationDraft = {
   mobileNumber: '',
   otp: '',
   profileCreatedFor: '',
+  gender: '',
   name: '',
   dob: { day: '', month: '', year: '' },
   height: '',
@@ -23,6 +24,7 @@ const initialDraft: RegistrationDraft = {
   numberOfChildren: '',
   religion: '',
   religionDivision: '',
+  motherTongue: '',
   caste: '',
   subCaste: '',
   willingToMarryAnyCaste: false,
@@ -67,4 +69,3 @@ export const useRegisterFlowStore = create<RegisterFlowState>((set) => ({
     })),
   reset: () => set({ draft: initialDraft, activeStep: REGISTRATION_STEPS[0] }),
 }));
-

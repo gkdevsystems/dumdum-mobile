@@ -11,7 +11,7 @@ import { vars } from 'nativewind';
 
 import { AuthProvider } from '@/providers/AuthProvider';
 import tokens from '@/theme/tokens';
-import { useColorScheme } from '@/components/useColorScheme';
+import { useAppTheme } from '@/components/theme/useAppTheme';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -53,8 +53,8 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-  const activeTokens = tokens[colorScheme === 'dark' ? 'dark' : 'light'];
+  const { theme, palette } = useAppTheme();
+  const activeTokens = tokens.resolveTokens(theme, palette);
   const themeVars = vars({
     'app-background': hexToRgb(activeTokens.background),
     'app-foreground': hexToRgb(activeTokens.foreground),
@@ -67,7 +67,7 @@ function RootLayoutNav() {
   return (
     <View style={themeVars} className="flex-1">
       <AuthProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
           <Stack>
             <Stack.Screen name="landing" options={{ headerShown: false }} />
             <Stack.Screen name="register" options={{ headerShown: false }} />

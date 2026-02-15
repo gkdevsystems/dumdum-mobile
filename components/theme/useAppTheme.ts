@@ -1,15 +1,25 @@
-import { useCallback, useEffect, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Appearance } from 'react-native';
 
 import {
+  getThemePalettePreference,
   getThemePreference,
+  setThemePalettePreference,
   setThemePreference,
+  type ThemePalette,
   type ThemePreference as Theme,
 } from '@/utils/storage/themePreference';
+import tokens from '@/theme/tokens';
 
 const listeners = new Set<() => void>();
 let hydrated = false;
 let currentTheme: Theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+let currentPalette: ThemePalette = tokens.defaultPalette;
+let snapshot = { theme: currentTheme, palette: currentPalette };
+
+function updateSnapshot() {
+  snapshot = { theme: currentTheme, palette: currentPalette };
+}
 
 function emitChange() {
   for (const listener of listeners) {
@@ -19,11 +29,13 @@ function emitChange() {
 
 function subscribe(listener: () => void) {
   listeners.add(listener);
-  return () => listeners.delete(listener);
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 function getSnapshot() {
-  return currentTheme;
+  return snapshot;
 }
 
 async function hydrateThemePreference() {
@@ -33,16 +45,34 @@ async function hydrateThemePreference() {
   hydrated = true;
 
   const storedTheme = await getThemePreference();
-  if (!storedTheme || storedTheme === currentTheme) {
-    return;
+  const storedPalette = await getThemePalettePreference();
+
+  let hasUpdate = false;
+  if (storedTheme && storedTheme !== currentTheme) {
+    currentTheme = storedTheme;
+    hasUpdate = true;
   }
 
-  currentTheme = storedTheme;
-  emitChange();
+  if (storedPalette && storedPalette !== currentPalette) {
+    currentPalette = storedPalette;
+    hasUpdate = true;
+  }
+
+  if (hasUpdate) {
+    updateSnapshot();
+    emitChange();
+  }
 }
 
 export function useAppTheme() {
-  const theme = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  const [state, setState] = useState(getSnapshot);
+
+  useEffect(() => {
+    const unsubscribe = subscribe(() => {
+      setState(getSnapshot());
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     void hydrateThemePreference();
@@ -53,13 +83,26 @@ export function useAppTheme() {
       return;
     }
     currentTheme = nextTheme;
+    updateSnapshot();
     emitChange();
     void setThemePreference(nextTheme);
   }, []);
 
+  const setPalette = useCallback((nextPalette: ThemePalette) => {
+    if (nextPalette === currentPalette) {
+      return;
+    }
+    currentPalette = nextPalette;
+    updateSnapshot();
+    emitChange();
+    void setThemePalettePreference(nextPalette);
+  }, []);
+
   return {
-    theme,
+    theme: state.theme,
+    palette: state.palette,
     setTheme,
-    toggleTheme: () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+    setPalette,
+    toggleTheme: () => setTheme(state.theme === 'dark' ? 'light' : 'dark'),
   };
 }

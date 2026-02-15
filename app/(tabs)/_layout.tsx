@@ -3,10 +3,10 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Redirect, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 
-import Colors from '@/constants/Colors';
 import { useAuth } from '@/providers/AuthProvider';
-import { useColorScheme } from '@/components/useColorScheme';
+import { useAppTheme } from '@/components/theme/useAppTheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import tokens from '@/theme/tokens';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -17,7 +17,8 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const { theme, palette } = useAppTheme();
+  const activeTokens = tokens.resolveTokens(theme, palette);
   const { token, isLoading } = useAuth();
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: activeTokens.tint,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
@@ -57,7 +58,7 @@ export default function TabLayout() {
                   <FontAwesome
                     name="info-circle"
                     size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
+                    color={activeTokens.text}
                     style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}

@@ -1,7 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useMemo, useState } from 'react';
-import { FlatList, Modal, Pressable, Text, TextInput, View } from 'react-native';
+import { FlatList, Modal, Pressable, View } from 'react-native';
 
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Text } from '@/components/ui/text';
+import { FieldMessage } from '@/features/register-flow/components/field-message';
 import type { Option } from '@/features/register-flow/types';
 
 type OptionPickerFieldProps = {
@@ -10,6 +16,9 @@ type OptionPickerFieldProps = {
   onChange: (value: string) => void;
   options: Option[];
   placeholder?: string;
+  icon?: string;
+  error?: string;
+  hint?: string;
 };
 
 export function OptionPickerField({
@@ -18,6 +27,9 @@ export function OptionPickerField({
   onChange,
   options,
   placeholder = 'Select an option',
+  icon = 'list-ul',
+  error,
+  hint,
 }: OptionPickerFieldProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
@@ -31,32 +43,36 @@ export function OptionPickerField({
 
   return (
     <View className="mb-4">
-      <Text className="mb-2 text-sm font-semibold text-app-foreground">{label}</Text>
+      <Label className="mb-2">{label}</Label>
       <Pressable
-        className="flex-row items-center justify-between rounded-2xl border border-app-border bg-app-card px-4 py-3"
+        className={`flex-row items-center justify-between rounded-2xl border bg-app-card px-4 py-4 ${error ? 'border-red-500' : 'border-app-border'}`}
         onPress={() => setOpen(true)}>
-        <Text className={selectedLabel ? 'text-app-foreground' : 'text-app-muted'}>
-          {selectedLabel || placeholder}
-        </Text>
+        <View className="flex-row items-center">
+          <FontAwesome name={icon as any} size={13} color="rgb(var(--app-muted))" />
+          <Text className={`ml-2 ${selectedLabel ? 'text-app-foreground' : 'text-app-muted'}`}>
+            {selectedLabel || placeholder}
+          </Text>
+        </View>
         <FontAwesome name="chevron-down" size={13} color="rgb(var(--app-muted))" />
       </Pressable>
+      <FieldMessage type="info" message={!error ? hint : undefined} />
+      <FieldMessage type="error" message={error} />
 
       <Modal visible={open} transparent animationType="slide" onRequestClose={() => setOpen(false)}>
         <View className="flex-1 justify-end bg-black/40">
           <View className="max-h-[85%] rounded-t-3xl bg-app-background px-5 pb-10 pt-4">
             <View className="mb-4 flex-row items-center justify-between">
               <Text className="text-lg font-bold text-app-foreground">{label}</Text>
-              <Pressable onPress={() => setOpen(false)}>
-                <Text className="text-sm font-semibold text-rose-500">Close</Text>
-              </Pressable>
+              <Button variant="ghost" onPress={() => setOpen(false)} className="h-8 px-2">
+                <Text className="text-app-primary">Close</Text>
+              </Button>
             </View>
 
-            <TextInput
+            <Input
               value={query}
               onChangeText={setQuery}
               placeholder="Search..."
-              placeholderTextColor="rgb(var(--app-muted))"
-              className="mb-3 rounded-2xl border border-app-border bg-app-card px-4 py-3 text-app-foreground"
+              className="mb-3 h-12 rounded-2xl border-app-border bg-app-card text-app-foreground"
             />
 
             <FlatList
@@ -67,13 +83,15 @@ export function OptionPickerField({
                 const isSelected = value === item.value;
                 return (
                   <Pressable
-                    className={`mb-2 rounded-2xl border px-4 py-3 ${isSelected ? 'border-rose-500 bg-rose-500/10' : 'border-app-border bg-app-card'}`}
                     onPress={() => {
                       onChange(item.value);
                       setOpen(false);
                       setQuery('');
                     }}>
-                    <Text className={isSelected ? 'font-semibold text-rose-500' : 'text-app-foreground'}>{item.label}</Text>
+                    <Card
+                      className={`mb-2 rounded-2xl border px-4 py-3.5 ${isSelected ? 'border-app-primary bg-app-primary/10' : 'border-app-border bg-app-card'}`}>
+                      <Text className={isSelected ? 'font-semibold text-app-primary' : 'text-app-foreground'}>{item.label}</Text>
+                    </Card>
                   </Pressable>
                 );
               }}
@@ -84,4 +102,3 @@ export function OptionPickerField({
     </View>
   );
 }
-

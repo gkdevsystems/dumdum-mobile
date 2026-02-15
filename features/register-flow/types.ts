@@ -15,6 +15,7 @@ export type RegistrationDraft = {
   mobileNumber: string;
   otp: string;
   profileCreatedFor: string;
+  gender: string;
   name: string;
   dob: Dob;
   height: string;
@@ -23,6 +24,7 @@ export type RegistrationDraft = {
   numberOfChildren: string;
   religion: string;
   religionDivision: string;
+  motherTongue: string;
   caste: string;
   subCaste: string;
   willingToMarryAnyCaste: boolean;
@@ -52,4 +54,3 @@ export const REGISTRATION_STEPS = [
 ] as const;
 
 export type RegistrationStep = (typeof REGISTRATION_STEPS)[number];
-

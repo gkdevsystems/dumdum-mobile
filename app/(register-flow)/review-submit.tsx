@@ -1,17 +1,43 @@
 import { router } from 'expo-router';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useMemo, useState } from 'react';
-import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, View } from 'react-native';
 
-import { StepProgress } from '@/features/register-flow/components/step-progress';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Text } from '@/components/ui/text';
+import { ScreenShell } from '@/features/register-flow/components/screen-shell';
 import { submitRegistration } from '@/features/register-flow/services/register-api';
 import { useRegisterFlowStore } from '@/features/register-flow/store';
 
 function Row({ label, value }: { label: string; value: string | boolean }) {
   return (
-    <View className="mb-3 rounded-2xl border border-app-border bg-app-card px-4 py-3">
+    <Card className="mb-3 rounded-2xl border-app-border bg-app-card px-4 py-3">
       <Text className="text-xs uppercase tracking-[1.5px] text-app-muted">{label}</Text>
       <Text className="mt-1 text-sm font-semibold text-app-foreground">{String(value || '-')}</Text>
-    </View>
+    </Card>
+  );
+}
+
+function GenderPreview({ gender }: { gender: string }) {
+  if (!gender) return null;
+  const isMale = gender === 'MALE';
+  const label = isMale ? 'Male' : 'Female';
+  const illustrationUri = isMale
+    ? 'https://img.icons8.com/color/144/businessman.png'
+    : 'https://img.icons8.com/color/144/businesswoman.png';
+
+  return (
+    <Card className="mb-4 flex-row items-center rounded-2xl border-app-border bg-app-card px-4 py-3">
+      <View className="size-14 items-center justify-center overflow-hidden rounded-full bg-app-primary/10">
+        <Image source={{ uri: illustrationUri }} className="size-12" resizeMode="contain" />
+      </View>
+      <View className="ml-3 flex-1">
+        <Text className="text-xs uppercase tracking-[1.5px] text-app-muted">Profile gender</Text>
+        <Text className="mt-1 text-sm font-semibold text-app-foreground">{label}</Text>
+      </View>
+      <FontAwesome name={isMale ? 'mars' : 'venus'} size={16} color="rgb(var(--app-primary))" />
+    </Card>
   );
 }
 
@@ -45,16 +71,35 @@ export default function ReviewSubmitScreen() {
   };
 
   return (
-    <View className="flex-1 bg-app-background px-5 pt-2">
-      <StepProgress step={6} totalSteps={6} />
-      <Text className="mt-5 text-3xl font-black text-app-foreground">Review & Submit</Text>
-      <Text className="mt-2 text-sm leading-6 text-app-muted">
-        Review your details. On submit, this payload is ready to be sent to API.
-      </Text>
-
-      <ScrollView contentContainerClassName="pb-40 pt-5">
+    <ScreenShell
+      title="Review & Submit"
+      subtitle="Review your details. On submit, this payload is ready to be sent to API."
+      step={6}
+      totalSteps={6}
+      footer={
+        <View className="flex-row gap-3">
+          <Button
+            className="flex-1 rounded-2xl border-app-border bg-app-card"
+            variant="outline"
+            onPress={() => {
+              setActiveStep('profile-career');
+              router.back();
+            }}>
+            <Text className="text-center text-sm font-semibold text-app-foreground">Back</Text>
+          </Button>
+          <Button
+            className={`flex-1 rounded-2xl ${submitting ? 'bg-app-primary/40' : 'bg-app-primary'}`}
+            disabled={submitting}
+            onPress={onSubmit}>
+            <Text className="text-center text-sm font-bold text-white">{submitting ? 'Submitting...' : 'Submit'}</Text>
+          </Button>
+        </View>
+      }>
+      <View className="pb-24">
+        <GenderPreview gender={payloadPreview.gender} />
         <Row label="Mobile number" value={payloadPreview.mobileNumber} />
         <Row label="Profile for" value={payloadPreview.profileCreatedFor} />
+        <Row label="Gender" value={payloadPreview.gender} />
         <Row label="Name" value={payloadPreview.name} />
         <Row label="DOB" value={`${payloadPreview.dob.day}-${payloadPreview.dob.month}-${payloadPreview.dob.year}`} />
         <Row label="Height" value={payloadPreview.height} />
@@ -63,6 +108,7 @@ export default function ReviewSubmitScreen() {
         <Row label="No. of children" value={payloadPreview.numberOfChildren} />
         <Row label="Religion" value={payloadPreview.religion} />
         <Row label="Division" value={payloadPreview.religionDivision} />
+        <Row label="Language" value={payloadPreview.motherTongue} />
         <Row label="Caste" value={payloadPreview.caste} />
         <Row label="Sub caste" value={payloadPreview.subCaste} />
         <Row label="Any caste accepted" value={payloadPreview.willingToMarryAnyCaste} />
@@ -80,27 +126,7 @@ export default function ReviewSubmitScreen() {
         <Row label="Annual income" value={payloadPreview.annualIncome} />
         <Row label="Family status" value={payloadPreview.familyStatus} />
         <Row label="About" value={payloadPreview.about} />
-      </ScrollView>
-
-      <View className="absolute inset-x-0 bottom-0 border-t border-app-border bg-app-background px-5 py-4">
-        <View className="flex-row gap-3">
-          <Pressable
-            className="flex-1 rounded-2xl border border-app-border bg-app-card px-4 py-4"
-            onPress={() => {
-              setActiveStep('profile-career');
-              router.back();
-            }}>
-            <Text className="text-center text-sm font-semibold text-app-foreground">Back</Text>
-          </Pressable>
-          <Pressable
-            className={`flex-1 rounded-2xl px-4 py-4 ${submitting ? 'bg-rose-300' : 'bg-rose-500'}`}
-            disabled={submitting}
-            onPress={onSubmit}>
-            <Text className="text-center text-sm font-bold text-white">{submitting ? 'Submitting...' : 'Submit'}</Text>
-          </Pressable>
-        </View>
       </View>
-    </View>
+    </ScreenShell>
   );
 }
-

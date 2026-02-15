@@ -1,4 +1,7 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+
+import { Progress } from '@/components/ui/progress';
+import { Text } from '@/components/ui/text';
 
 type StepProgressProps = {
   step: number;
@@ -6,13 +9,11 @@ type StepProgressProps = {
 };
 
 export function StepProgress({ step, totalSteps }: StepProgressProps) {
-  const width = `${Math.min(100, Math.max(0, (step / totalSteps) * 100))}%` as `${number}%`;
+  const progressValue = Math.min(100, Math.max(0, (step / totalSteps) * 100));
 
   return (
     <View>
-      <View className="h-2 overflow-hidden rounded-full bg-app-card">
-        <View className="h-full rounded-full bg-rose-500" style={{ width }} />
-      </View>
+      <Progress value={progressValue} className="bg-app-card" indicatorClassName="bg-app-primary" />
       <Text className="mt-2 text-xs font-semibold uppercase tracking-[2px] text-app-muted">
         Step {step} of {totalSteps}
       </Text>

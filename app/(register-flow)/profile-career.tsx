@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { useMemo, useState } from 'react';
 
 import { OptionChips } from '@/features/register-flow/components/option-chips';
 import { OptionPickerField } from '@/features/register-flow/components/option-picker-field';
@@ -18,24 +19,16 @@ import {
 } from '@/features/register-flow/data/master-data';
 import { getIncomeOptions } from '@/features/register-flow/data/selectors';
 import { useRegisterFlowStore } from '@/features/register-flow/store';
+import { hasErrors, validateCareerStep } from '@/shared/register/validation';
 
 export default function ProfileCareerScreen() {
   const draft = useRegisterFlowStore((state) => state.draft);
   const updateField = useRegisterFlowStore((state) => state.updateField);
   const setActiveStep = useRegisterFlowStore((state) => state.setActiveStep);
+  const [showErrors, setShowErrors] = useState(false);
   const incomeOptions = getIncomeOptions(draft.incomeCurrency);
-
-  const canContinue =
-    draft.residentialCountry.length > 0 &&
-    draft.residentialState.length > 0 &&
-    draft.citizenship.length > 0 &&
-    draft.residentialStatus.length > 0 &&
-    draft.educationCategory.length > 0 &&
-    draft.employmentType.length > 0 &&
-    draft.occupation.length > 0 &&
-    draft.annualIncome.length > 0 &&
-    draft.familyStatus.length > 0 &&
-    draft.about.trim().length >= 10;
+  const errors = useMemo(() => validateCareerStep(draft), [draft]);
+  const canContinue = !hasErrors(errors);
 
   return (
     <ScreenShell
@@ -50,11 +43,11 @@ export default function ProfileCareerScreen() {
             router.back();
           }}
           onNext={() => {
+            setShowErrors(true);
             if (!canContinue) return;
             setActiveStep('review-submit');
             router.push('/(register-flow)/review-submit');
           }}
-          disabled={!canContinue}
         />
       }>
       <OptionPickerField
@@ -62,6 +55,8 @@ export default function ProfileCareerScreen() {
         value={draft.residentialCountry}
         onChange={(value) => updateField('residentialCountry', value)}
         options={countryOptions}
+        icon="globe"
+        error={showErrors ? errors.residentialCountry : undefined}
       />
 
       <OptionPickerField
@@ -69,6 +64,8 @@ export default function ProfileCareerScreen() {
         value={draft.residentialState}
         onChange={(value) => updateField('residentialState', value)}
         options={stateOptions}
+        icon="map-marker"
+        error={showErrors ? errors.residentialState : undefined}
       />
 
       <OptionPickerField
@@ -76,6 +73,8 @@ export default function ProfileCareerScreen() {
         value={draft.citizenship}
         onChange={(value) => updateField('citizenship', value)}
         options={citizenshipOptions}
+        icon="id-card"
+        error={showErrors ? errors.citizenship : undefined}
       />
 
       <OptionPickerField
@@ -83,6 +82,8 @@ export default function ProfileCareerScreen() {
         value={draft.residentialStatus}
         onChange={(value) => updateField('residentialStatus', value)}
         options={residentStatusOptions}
+        icon="ticket"
+        error={showErrors ? errors.residentialStatus : undefined}
       />
 
       <OptionPickerField
@@ -90,6 +91,8 @@ export default function ProfileCareerScreen() {
         value={draft.educationCategory}
         onChange={(value) => updateField('educationCategory', value)}
         options={educationCategoryOptions}
+        icon="graduation-cap"
+        error={showErrors ? errors.educationCategory : undefined}
       />
 
       <TextField
@@ -97,6 +100,8 @@ export default function ProfileCareerScreen() {
         value={draft.educationDetail}
         onChangeText={(value) => updateField('educationDetail', value)}
         placeholder="Example: BE - Computer Science, Anna University"
+        icon="book"
+        error={showErrors ? errors.educationDetail : undefined}
       />
 
       <OptionPickerField
@@ -104,6 +109,8 @@ export default function ProfileCareerScreen() {
         value={draft.employmentType}
         onChange={(value) => updateField('employmentType', value)}
         options={employmentTypeOptions}
+        icon="building"
+        error={showErrors ? errors.employmentType : undefined}
       />
 
       <OptionPickerField
@@ -111,6 +118,8 @@ export default function ProfileCareerScreen() {
         value={draft.occupation}
         onChange={(value) => updateField('occupation', value)}
         options={occupationOptions}
+        icon="briefcase"
+        error={showErrors ? errors.occupation : undefined}
       />
 
       <OptionChips
@@ -129,6 +138,8 @@ export default function ProfileCareerScreen() {
         value={draft.annualIncome}
         onChange={(value) => updateField('annualIncome', value)}
         options={incomeOptions}
+        icon="money"
+        error={showErrors ? errors.annualIncome : undefined}
       />
 
       <OptionChips
@@ -136,6 +147,7 @@ export default function ProfileCareerScreen() {
         value={draft.familyStatus}
         options={familyStatusOptions}
         onChange={(value) => updateField('familyStatus', value)}
+        error={showErrors ? errors.familyStatus : undefined}
       />
 
       <TextField
@@ -145,8 +157,10 @@ export default function ProfileCareerScreen() {
         placeholder="Write a short profile summary"
         multiline
         maxLength={400}
+        icon="quote-left"
+        error={showErrors ? errors.about : undefined}
+        hint="A short, warm intro builds trust faster."
       />
     </ScreenShell>
   );
 }
-

@@ -12,6 +12,11 @@ export const profileCreatedForOptions: Option[] = [
   { value: 'RELATIVE', label: 'Relative' },
 ];
 
+export const genderOptions = toOptions({
+  MALE: 'Male',
+  FEMALE: 'Female',
+});
+
 export const maritalStatusOptions = toOptions({
   NEVER_MARRIED: 'Never married',
   SPOUSE_NOT_ALIVE: 'Widow / Widower',
@@ -49,6 +54,15 @@ export const christianDivisionOptions = toOptions({
   PENTECOST: 'Pentecost',
   PROTESTANT: 'Protestant',
   CHRISTIAN_OTHERS: 'Christian - Others',
+});
+
+export const motherTongueOptions = toOptions({
+  TAMIL: 'Tamil',
+  TELUGU: 'Telugu',
+  MALAYALAM: 'Malayalam',
+  KANNADA: 'Kannada',
+  HINDI: 'Hindi',
+  ENGLISH: 'English',
 });
 
 export const casteOptions = toOptions({
@@ -167,22 +181,22 @@ export const familyStatusOptions = toOptions({
 });
 
 export const incomeCurrencyOptions: Option[] = [
-  { value: 'INR', label: 'INR (₹)' },
+  { value: 'INR', label: 'INR' },
   { value: 'USD', label: 'USD ($)' },
 ];
 
 const inrIncomeOptions = toOptions({
-  RS_1_LAKH: '₹ 0 - 1 lakh per annum',
-  RS_3_LAKH: '₹ 2 - 3 lakhs per annum',
-  RS_5_LAKH: '₹ 4 - 5 lakhs per annum',
-  RS_7_LAKH: '₹ 6 - 7 lakhs per annum',
-  RS_10_LAKH: '₹ 9 - 10 lakhs per annum',
-  RS_12_LAKH: '₹ 10 - 12 lakhs per annum',
-  RS_20_LAKH: '₹ 18 - 20 lakhs per annum',
-  RS_30_LAKH: '₹ 25 - 30 lakhs per annum',
-  RS_50_LAKH: '₹ 45 - 50 lakhs per annum',
-  RS_1_CRORE: '₹ 90 lakhs - 1 crore per annum',
-  GREATER_THAN_RS_1_CRORE: '₹ 1 crore & above per annum',
+  RS_1_LAKH: 'INR 0 - 1 lakh per annum',
+  RS_3_LAKH: 'INR 2 - 3 lakhs per annum',
+  RS_5_LAKH: 'INR 4 - 5 lakhs per annum',
+  RS_7_LAKH: 'INR 6 - 7 lakhs per annum',
+  RS_10_LAKH: 'INR 9 - 10 lakhs per annum',
+  RS_12_LAKH: 'INR 10 - 12 lakhs per annum',
+  RS_20_LAKH: 'INR 18 - 20 lakhs per annum',
+  RS_30_LAKH: 'INR 25 - 30 lakhs per annum',
+  RS_50_LAKH: 'INR 45 - 50 lakhs per annum',
+  RS_1_CRORE: 'INR 90 lakhs - 1 crore per annum',
+  GREATER_THAN_RS_1_CRORE: 'INR 1 crore & above per annum',
 });
 
 const usdIncomeOptions = toOptions({
@@ -215,4 +229,3 @@ export const heightOptions: Option[] = [
   { value: 'FT6_IN8_203CM', label: "6'8\"" },
   { value: 'FT7_213CM', label: "7'0\"" },
 ];
-

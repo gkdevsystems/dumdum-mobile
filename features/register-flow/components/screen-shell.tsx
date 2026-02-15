@@ -1,7 +1,9 @@
 import { type ReactNode } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Separator } from '@/components/ui/separator';
+import { Text } from '@/components/ui/text';
 import { StepProgress } from '@/features/register-flow/components/step-progress';
 
 type ScreenShellProps = {
@@ -14,6 +16,8 @@ type ScreenShellProps = {
 };
 
 export function ScreenShell({ title, subtitle, step, totalSteps, children, footer }: ScreenShellProps) {
+  const insets = useSafeAreaInsets();
+
   return (
     <SafeAreaView className="flex-1 bg-app-background">
       <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -28,8 +32,14 @@ export function ScreenShell({ title, subtitle, step, totalSteps, children, foote
         </ScrollView>
       </KeyboardAvoidingView>
 
-      {footer ? <View className="absolute inset-x-0 bottom-0 border-t border-app-border bg-app-background px-5 py-4">{footer}</View> : null}
+      {footer ? (
+        <View
+          className="absolute inset-x-0 bg-app-background px-5 pt-4"
+          style={{ bottom: Math.max(insets.bottom, 12), paddingBottom: 10 }}>
+          <Separator className="mb-4 bg-app-border" />
+          {footer}
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
-
