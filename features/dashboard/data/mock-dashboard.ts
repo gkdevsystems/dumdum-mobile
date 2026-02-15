@@ -1,5 +1,70 @@
 import type { DashboardData } from '@/shared/dashboard/types';
 
+const profileNames = [
+  'Priya Sharma',
+  'Ananya Iyer',
+  'Neha Verma',
+  'Kavya Menon',
+  'Aditi Rao',
+  'Meera Nair',
+  'Ishita Gupta',
+  'Riya Kapoor',
+  'Sneha Pillai',
+  'Diya Subramaniam',
+];
+
+const cities = [
+  'Mumbai, Maharashtra',
+  'Bangalore, Karnataka',
+  'Chennai, Tamil Nadu',
+  'Hyderabad, Telangana',
+  'Pune, Maharashtra',
+  'Kochi, Kerala',
+  'Ahmedabad, Gujarat',
+  'Jaipur, Rajasthan',
+];
+
+const roles = [
+  'Software Engineer',
+  'Product Designer',
+  'Marketing Specialist',
+  'Data Analyst',
+  'HR Consultant',
+  'Architect',
+  'Content Strategist',
+  'Financial Analyst',
+];
+
+const education = [
+  'B.Tech from IIT Delhi',
+  'MBA from IIM Bangalore',
+  'B.Des from NID Ahmedabad',
+  'M.Sc from Anna University',
+  'B.Com from Christ University',
+  'M.Tech from NIT Trichy',
+];
+
+const profileImages = [
+  'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'https://images.pexels.com/photos/3404200/pexels-photo-3404200.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'https://images.pexels.com/photos/762020/pexels-photo-762020.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1200',
+  'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1200',
+];
+
+const recommendedProfiles = Array.from({ length: 20 }, (_, index) => ({
+  id: `r${index + 1}`,
+  name: profileNames[index % profileNames.length],
+  age: 23 + (index % 7),
+  location: cities[index % cities.length],
+  occupation: `${roles[index % roles.length]} at ${['Google', 'Amazon', 'Infosys', 'TCS', 'Adobe'][index % 5]}`,
+  education: education[index % education.length],
+  height: `5'${3 + (index % 5)}"`,
+  imageUri: profileImages[index % profileImages.length],
+  matchPercent: 82 + (index % 16),
+  verified: index % 2 === 0,
+}));
+
 export const mockDashboard: DashboardData = {
   brandName: 'Suyamvaram',
   searchPlaceholder: 'Search profiles...',
@@ -95,38 +160,10 @@ export const mockDashboard: DashboardData = {
     subtitle: 'Connect with unlimited profiles',
     ctaLabel: 'Unlock Now',
   },
-  recommended: [
-    {
-      id: 'r1',
-      name: 'Priya Sharma',
-      age: 26,
-      location: 'Mumbai, Maharashtra',
-      occupation: 'Software Engineer at Google',
-      education: 'B.Tech from IIT Delhi',
-      height: `5'5"`,
-      imageUri:
-        'https://images.pexels.com/photos/3760263/pexels-photo-3760263.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      matchPercent: 94,
-      verified: true,
-    },
-    {
-      id: 'r2',
-      name: 'Ananya Iyer',
-      age: 24,
-      location: 'Bangalore, Karnataka',
-      occupation: 'Product Designer at Amazon',
-      education: 'B.Des from NID Ahmedabad',
-      height: `5'4"`,
-      imageUri:
-        'https://images.pexels.com/photos/3404200/pexels-photo-3404200.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      matchPercent: 92,
-      verified: true,
-    },
-  ],
+  recommended: recommendedProfiles,
   icebreaker: {
     question: 'What is your idea of a perfect weekend?',
     answeredCount: 127,
     ctaLabel: 'Answer & Connect',
   },
 };
-
