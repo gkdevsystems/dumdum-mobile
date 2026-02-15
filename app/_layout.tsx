@@ -9,6 +9,7 @@ import 'react-native-reanimated';
 import '../global.css';
 import { vars } from 'nativewind';
 
+import { AuthProvider } from '@/providers/AuthProvider';
 import tokens from '@/theme/tokens';
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -31,21 +32,23 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
-    if (error) throw error;
-  }, [error]);
+    console.log('[ROUTE][RootLayout] font state changed', { loaded, hasError: Boolean(error) });
+  }, [loaded, error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (loaded || error) {
+      console.log('[ROUTE][RootLayout] hiding native splash');
+      void SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, error]);
 
-  if (!loaded) {
-    return null;
-  }
+  // if (!loaded && !error) {
+  //   console.log('[ROUTE][RootLayout] waiting for fonts before rendering routes');
+  //   return null;
+  // }
 
+  console.log('[ROUTE][RootLayout] rendering root navigator');
   return <RootLayoutNav />;
 }
 
@@ -63,13 +66,16 @@ function RootLayoutNav() {
 
   return (
     <View style={themeVars} className="flex-1">
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="landing" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        </Stack>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="landing" options={{ headerShown: false }} />
+            <Stack.Screen name="register" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+          </Stack>
+        </ThemeProvider>
+      </AuthProvider>
     </View>
   );
 }
@@ -79,9 +85,9 @@ function hexToRgb(hex: string) {
   const value =
     normalized.length === 3
       ? normalized
-          .split('')
-          .map((char) => char + char)
-          .join('')
+        .split('')
+        .map((char) => char + char)
+        .join('')
       : normalized;
   const r = parseInt(value.slice(0, 2), 16);
   const g = parseInt(value.slice(2, 4), 16);

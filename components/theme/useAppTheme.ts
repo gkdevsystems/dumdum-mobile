@@ -1,6 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useSyncExternalStore } from 'react';
 import { Appearance } from 'react-native';
-import { useColorScheme as useNativeWindColorScheme } from 'nativewind';
 
 import {
   getThemePreference,
@@ -8,41 +7,55 @@ import {
   type ThemePreference as Theme,
 } from '@/utils/storage/themePreference';
 
-export function useAppTheme() {
-  const { colorScheme, setColorScheme } = useNativeWindColorScheme();
-  const theme: Theme = colorScheme === 'light' ? 'light' : 'dark';
+const listeners = new Set<() => void>();
+let hydrated = false;
+let currentTheme: Theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 
-  const applyTheme = useCallback((nextTheme: Theme) => {
-    try {
-      setColorScheme(nextTheme);
-    } catch {
-      const appearance = Appearance as typeof Appearance & {
-        setColorScheme?: (scheme: Theme | null) => void;
-      };
-      appearance.setColorScheme?.(nextTheme);
-    }
-  }, [setColorScheme]);
+function emitChange() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
+
+function getSnapshot() {
+  return currentTheme;
+}
+
+async function hydrateThemePreference() {
+  if (hydrated) {
+    return;
+  }
+  hydrated = true;
+
+  const storedTheme = await getThemePreference();
+  if (!storedTheme || storedTheme === currentTheme) {
+    return;
+  }
+
+  currentTheme = storedTheme;
+  emitChange();
+}
+
+export function useAppTheme() {
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
   useEffect(() => {
-    let mounted = true;
-
-    (async () => {
-      const storedTheme = await getThemePreference();
-      if (!mounted || !storedTheme) {
-        return;
-      }
-      applyTheme(storedTheme);
-    })();
-
-    return () => {
-      mounted = false;
-    };
-  }, [applyTheme]);
+    void hydrateThemePreference();
+  }, []);
 
   const setTheme = useCallback((nextTheme: Theme) => {
-    applyTheme(nextTheme);
+    if (nextTheme === currentTheme) {
+      return;
+    }
+    currentTheme = nextTheme;
+    emitChange();
     void setThemePreference(nextTheme);
-  }, [applyTheme]);
+  }, []);
 
   return {
     theme,

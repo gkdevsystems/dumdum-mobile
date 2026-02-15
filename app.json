@@ -4,12 +4,12 @@
     "slug": "suyamvaram",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/splash-icon.png",
+    "icon": "./assets/images/bg1.png",
     "scheme": "suyamvaram",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/splash-icon.png",
+      "image": "./assets/images/bg1.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,11 +18,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/splash-icon.png",
+        "foregroundImage": "./assets/images/bg1.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.suyamvaram"
     },
     "web": {
       "bundler": "metro",

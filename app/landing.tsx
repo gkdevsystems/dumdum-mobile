@@ -170,6 +170,17 @@ export default function LandingScreen() {
     inputRange: [0, 1],
     outputRange: [0, -2],
   });
+
+  const handleGetStarted = () => {
+    console.log('[ROUTE][Landing] Get Started pressed -> /register');
+    router.push('/register' as never);
+  };
+
+  const handleViewProfiles = () => {
+    console.log('[ROUTE][Landing] View Profiles pressed -> /(tabs)');
+    router.replace('/(tabs)');
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-app-background">
       <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
@@ -359,7 +370,7 @@ export default function LandingScreen() {
           <View className="mt-8">
             <Pressable
               className="flex-row items-center justify-center rounded-3xl border border-rose-300 bg-rose-400 px-6 py-4 shadow-lg shadow-rose-200/60 active:opacity-90"
-              onPress={() => router.replace('/(tabs)')}>
+              onPress={handleGetStarted}>
               <View className="mr-3 h-8 w-8 items-center justify-center rounded-full bg-white/20">
                 <FontAwesome name="heart" size={12} color="#ffffff" />
               </View>
@@ -369,7 +380,7 @@ export default function LandingScreen() {
 
             <Pressable
               className="mt-3 flex-row items-center justify-center rounded-3xl border border-app-border bg-app-card px-6 py-4 active:opacity-80"
-              onPress={() => router.replace('/(tabs)')}>
+              onPress={handleViewProfiles}>
               <FontAwesome
                 name="users"
                 size={13}
@@ -377,7 +388,7 @@ export default function LandingScreen() {
                 style={{ marginRight: 8 }}
               />
               <Text className="text-sm font-semibold tracking-[0.2px] text-app-foreground">
-                Explore Community Matches
+                View Profiles
               </Text>
             </Pressable>
 
