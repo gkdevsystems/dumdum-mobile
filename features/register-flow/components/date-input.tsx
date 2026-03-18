@@ -25,8 +25,8 @@ export function DateInput({
   error,
 }: DateInputProps) {
   return (
-    <View className="mb-4">
-      <Label className="mb-2">Date of Birth</Label>
+    <View className="mb-5">
+      <Label className="mb-2 text-[13px] uppercase tracking-[1px] text-app-muted">Date of Birth</Label>
       <View className="mb-2 flex-row items-center">
         <FontAwesome name="calendar" size={13} color="rgb(var(--app-muted))" />
       </View>
@@ -37,7 +37,7 @@ export function DateInput({
           keyboardType="number-pad"
           maxLength={2}
           placeholder="DD"
-          className={`h-14 flex-1 rounded-2xl bg-app-card text-center text-app-foreground ${error ? 'border-red-500' : 'border-app-border'}`}
+          className={`h-14 flex-1 rounded-2xl bg-app-card/95 text-center text-app-foreground shadow-sm shadow-black/5 ${error ? 'border-red-500' : 'border-app-border'}`}
         />
         <Input
           value={month}
@@ -45,7 +45,7 @@ export function DateInput({
           keyboardType="number-pad"
           maxLength={2}
           placeholder="MM"
-          className={`h-14 flex-1 rounded-2xl bg-app-card text-center text-app-foreground ${error ? 'border-red-500' : 'border-app-border'}`}
+          className={`h-14 flex-1 rounded-2xl bg-app-card/95 text-center text-app-foreground shadow-sm shadow-black/5 ${error ? 'border-red-500' : 'border-app-border'}`}
         />
         <Input
           value={year}
@@ -53,7 +53,7 @@ export function DateInput({
           keyboardType="number-pad"
           maxLength={4}
           placeholder="YYYY"
-          className={`h-14 flex-1 rounded-2xl bg-app-card text-center text-app-foreground ${error ? 'border-red-500' : 'border-app-border'}`}
+          className={`h-14 flex-1 rounded-2xl bg-app-card/95 text-center text-app-foreground shadow-sm shadow-black/5 ${error ? 'border-red-500' : 'border-app-border'}`}
         />
       </View>
       <FieldMessage type="error" message={error} />

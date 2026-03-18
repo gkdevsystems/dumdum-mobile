@@ -42,10 +42,10 @@ export function OptionPickerField({
   }, [options, query]);
 
   return (
-    <View className="mb-4">
-      <Label className="mb-2">{label}</Label>
+    <View className="mb-5">
+      <Label className="mb-2 text-[13px] uppercase tracking-[1px] text-app-muted">{label}</Label>
       <Pressable
-        className={`flex-row items-center justify-between rounded-2xl border bg-app-card px-4 py-4 ${error ? 'border-red-500' : 'border-app-border'}`}
+        className={`flex-row items-center justify-between rounded-2xl border bg-app-card/95 px-4 py-4 shadow-sm shadow-black/5 ${error ? 'border-red-500' : 'border-app-border'}`}
         onPress={() => setOpen(true)}>
         <View className="flex-row items-center">
           <FontAwesome name={icon as any} size={13} color="rgb(var(--app-muted))" />
@@ -60,7 +60,7 @@ export function OptionPickerField({
 
       <Modal visible={open} transparent animationType="slide" onRequestClose={() => setOpen(false)}>
         <View className="flex-1 justify-end bg-black/40">
-          <View className="max-h-[85%] rounded-t-3xl bg-app-background px-5 pb-10 pt-4">
+          <View className="max-h-[88%] rounded-t-3xl border-t border-app-border bg-app-background px-5 pb-10 pt-4">
             <View className="mb-4 flex-row items-center justify-between">
               <Text className="text-lg font-bold text-app-foreground">{label}</Text>
               <Button variant="ghost" onPress={() => setOpen(false)} className="h-8 px-2">
@@ -72,13 +72,14 @@ export function OptionPickerField({
               value={query}
               onChangeText={setQuery}
               placeholder="Search..."
-              className="mb-3 h-12 rounded-2xl border-app-border bg-app-card text-app-foreground"
+              className="mb-3 h-12 rounded-2xl border-app-border bg-app-card/95 text-app-foreground"
             />
 
             <FlatList
               data={filteredOptions}
               keyExtractor={(item) => item.value}
               keyboardShouldPersistTaps="handled"
+              showsVerticalScrollIndicator={false}
               renderItem={({ item }) => {
                 const isSelected = value === item.value;
                 return (
@@ -89,7 +90,7 @@ export function OptionPickerField({
                       setQuery('');
                     }}>
                     <Card
-                      className={`mb-2 rounded-2xl border px-4 py-3.5 ${isSelected ? 'border-app-primary bg-app-primary/10' : 'border-app-border bg-app-card'}`}>
+                      className={`mb-2 rounded-2xl border px-4 py-3.5 ${isSelected ? 'border-app-primary bg-app-primary/10' : 'border-app-border bg-app-card/95'}`}>
                       <Text className={isSelected ? 'font-semibold text-app-primary' : 'text-app-foreground'}>{item.label}</Text>
                     </Card>
                   </Pressable>

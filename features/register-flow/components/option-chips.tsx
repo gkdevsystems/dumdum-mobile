@@ -17,8 +17,8 @@ type OptionChipsProps = {
 
 export function OptionChips({ label, value, options, onChange, error, hint }: OptionChipsProps) {
   return (
-    <View className="mb-4">
-      <Label className="mb-2">{label}</Label>
+    <View className="mb-5">
+      <Label className="mb-2 text-[13px] uppercase tracking-[1px] text-app-muted">{label}</Label>
       <View className="flex-row flex-wrap gap-2.5">
         {options.map((option) => {
           const selected = value === option.value;
@@ -26,9 +26,8 @@ export function OptionChips({ label, value, options, onChange, error, hint }: Op
             <Button
               key={option.value}
               variant={selected ? 'default' : 'outline'}
-              className={`min-h-11 rounded-full px-4 ${selected ? 'border-app-primary bg-app-primary' : 'border-app-border bg-app-card'} ${error && !selected ? 'border-red-500/60' : ''}`}
-              onPress={() => onChange(option.value)}
-            >
+              className={`min-h-11 rounded-full px-4 ${selected ? 'border-app-primary bg-app-primary' : 'border-app-border bg-app-card/95'} ${error && !selected ? 'border-red-500/60' : ''}`}
+              onPress={() => onChange(option.value)}>
               <Text className={`text-sm font-semibold ${selected ? 'text-white' : 'text-app-foreground'}`}>{option.label}</Text>
             </Button>
           );

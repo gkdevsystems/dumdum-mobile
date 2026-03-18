@@ -37,8 +37,8 @@ function AvatarIllustration({ isMale, selected }: { isMale: boolean; selected: b
 
 export function GenderSelector({ value, options, onChange, error, hint }: GenderSelectorProps) {
   return (
-    <View className="mb-4">
-      <Label className="mb-2">Gender</Label>
+    <View className="mb-5">
+      <Label className="mb-2 text-[13px] uppercase tracking-[1px] text-app-muted">Gender</Label>
       <View className="flex-row gap-3">
         {options.map((option) => {
           const isSelected = value === option.value;
@@ -46,7 +46,7 @@ export function GenderSelector({ value, options, onChange, error, hint }: Gender
           return (
             <Pressable key={option.value} className="flex-1" onPress={() => onChange(option.value)}>
               <Card
-                className={`overflow-hidden rounded-2xl border p-0 ${isSelected ? 'border-app-primary' : 'border-app-border'}`}>
+                className={`overflow-hidden rounded-2xl border p-0 ${isSelected ? 'border-app-primary' : 'border-app-border'} bg-app-card/95`}>
                 <AvatarIllustration isMale={isMale} selected={isSelected} />
                 <View className="px-3 py-3">
                   <Text

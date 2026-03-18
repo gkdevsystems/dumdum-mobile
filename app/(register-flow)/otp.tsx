@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
@@ -16,6 +16,7 @@ export default function OtpScreen() {
   const updateField = useRegisterFlowStore((state) => state.updateField);
   const setActiveStep = useRegisterFlowStore((state) => state.setActiveStep);
   const [resendCount, setResendCount] = useState(0);
+  const [resendCooldown, setResendCooldown] = useState(20);
   const [showErrors, setShowErrors] = useState(false);
 
   const maskedNumber = useMemo(() => {
@@ -25,6 +26,15 @@ export default function OtpScreen() {
 
   const errors = useMemo(() => validateOtpStep(otp), [otp]);
   const canContinue = !hasErrors(errors);
+  const canResend = resendCooldown === 0;
+
+  useEffect(() => {
+    if (resendCooldown === 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((current) => (current <= 1 ? 0 : current - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   return (
     <ScreenShell
@@ -47,6 +57,11 @@ export default function OtpScreen() {
           nextLabel="Verify OTP"
         />
       }>
+      <View className="mb-4 rounded-2xl border border-app-border bg-app-card/85 px-4 py-3">
+        <Text className="text-xs uppercase tracking-[1.5px] text-app-muted">Verifying mobile</Text>
+        <Text className="mt-1 text-sm font-semibold text-app-foreground">{maskedNumber}</Text>
+      </View>
+
       <OtpField
         value={otp}
         onChange={(value) => updateField('otp', value)}
@@ -54,13 +69,20 @@ export default function OtpScreen() {
         hint="Enter the code from SMS. It usually arrives in a few seconds."
       />
       <View className="items-start">
-      <Button
-        className="rounded-full border-app-border bg-app-card"
-        variant="outline"
-        size="sm"
-        onPress={() => setResendCount((count) => count + 1)}>
-        <Text className="text-xs font-semibold text-app-foreground">Resend OTP</Text>
-      </Button>
+        <Button
+          className="rounded-full border-app-border bg-app-card"
+          variant="outline"
+          size="sm"
+          onPress={() => {
+            if (!canResend) return;
+            setResendCount((count) => count + 1);
+            setResendCooldown(20);
+          }}
+          disabled={!canResend}>
+          <Text className="text-xs font-semibold text-app-foreground">
+            {canResend ? 'Resend OTP' : `Resend in ${resendCooldown}s`}
+          </Text>
+        </Button>
       </View>
       <Text className="mt-2 text-xs text-app-muted">Resend attempts in this session: {resendCount}</Text>
     </ScreenShell>

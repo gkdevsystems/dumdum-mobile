@@ -34,10 +34,10 @@ export function TextField({
   hint,
 }: TextFieldProps) {
   return (
-    <View className="mb-4">
-      <Label className="mb-2">
+    <View className="mb-5">
+      <Label className="mb-2 text-[13px] uppercase tracking-[1px] text-app-muted">
         {label}
-        {optional ? <Text className="font-normal text-app-muted"> (optional)</Text> : null}
+        {optional ? <Text className="font-normal text-app-muted"> (Optional)</Text> : null}
       </Label>
       <View className="relative">
         <View className="pointer-events-none absolute left-4 top-4 z-10">
@@ -50,7 +50,7 @@ export function TextField({
           keyboardType={keyboardType}
           multiline={multiline}
           maxLength={maxLength}
-          className={`rounded-2xl border-app-border bg-app-card pl-11 text-app-foreground ${multiline ? 'min-h-[130px] py-3' : 'h-14'} ${error ? 'border-red-500' : ''}`}
+          className={`rounded-2xl border-app-border bg-app-card/95 pl-11 text-app-foreground shadow-sm shadow-black/5 ${multiline ? 'min-h-[130px] py-3' : 'h-14'} ${error ? 'border-red-500' : ''}`}
           textAlignVertical={multiline ? 'top' : 'auto'}
         />
       </View>
