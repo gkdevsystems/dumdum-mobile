@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Redirect, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { Image, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -57,23 +57,13 @@ export default function TabLayout() {
   const { token, isLoading } = useAuth();
   const insets = useSafeAreaInsets();
 
-  useEffect(() => {
-    console.log('[ROUTE][TabsGuard] evaluate', { isLoading, hasToken: Boolean(token) });
-  }, [isLoading, token]);
-
   if (isLoading) {
-    console.log('[ROUTE][TabsGuard] blocked: auth loading');
     return null;
   }
 
-  // Todo Commenting for now
-
-  // if (!token) {
-  //   console.log('[ROUTE][TabsGuard] redirect -> /landing (missing token)');
-  //   return <Redirect href="/landing" />;
-  // }
-
-  console.log('[ROUTE][TabsGuard] access granted to tabs');
+  // Keep the guard in place for easy switch-back when full auth gating is enabled.
+  // if (!token) return <Redirect href="/landing" />;
+  void token;
   return (
     <Tabs
       screenOptions={{

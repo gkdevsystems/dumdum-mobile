@@ -118,6 +118,32 @@ const palettes = {
 const defaultPalette = 'rose';
 const defaultMode = 'light';
 
+function hexToRgb(hex) {
+  const normalized = hex.replace('#', '');
+  const value =
+    normalized.length === 3
+      ? normalized
+          .split('')
+          .map((char) => char + char)
+          .join('')
+      : normalized;
+  const r = parseInt(value.slice(0, 2), 16);
+  const g = parseInt(value.slice(2, 4), 16);
+  const b = parseInt(value.slice(4, 6), 16);
+  return `${r} ${g} ${b}`;
+}
+
+function toCssVars(tokenSet) {
+  return {
+    '--app-background': hexToRgb(tokenSet.background),
+    '--app-foreground': hexToRgb(tokenSet.foreground),
+    '--app-card': hexToRgb(tokenSet.card),
+    '--app-border': hexToRgb(tokenSet.border),
+    '--app-muted': hexToRgb(tokenSet.muted),
+    '--app-primary': hexToRgb(tokenSet.primary),
+  };
+}
+
 function resolveTokens(mode = defaultMode, palette = defaultPalette) {
   const selectedPalette = palettes[palette] || palettes[defaultPalette];
   return selectedPalette[mode] || selectedPalette[defaultMode];
@@ -134,6 +160,8 @@ const tokens = {
   palettes,
   defaultPalette,
   resolveTokens,
+  hexToRgb,
+  toCssVars,
 };
 
 module.exports = tokens;

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { APP_ROUTES } from '@/constants/routes';
 import { useAuth } from '@/providers/AuthProvider';
 
 export default function RegisterScreen() {
@@ -14,17 +15,12 @@ export default function RegisterScreen() {
 
   const handleContinue = async () => {
     if (!canContinue) return;
-    console.log('[ROUTE][Register] Continue pressed -> signIn -> /(tabs)', {
-      fullNameLength: fullName.trim().length,
-      phoneLength: phoneNumber.trim().length,
-    });
     await signIn('demo-registration-token');
-    router.replace('/(tabs)' as never);
+    router.replace(APP_ROUTES.TABS as never);
   };
 
   const handleViewProfiles = () => {
-    console.log('[ROUTE][Register] View Profiles pressed -> /(tabs)');
-    router.replace('/(tabs)');
+    router.replace(APP_ROUTES.TABS);
   };
 
   return (
