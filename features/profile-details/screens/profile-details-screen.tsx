@@ -32,8 +32,9 @@ export function ProfileDetailsScreen({ profileId }: ProfileDetailsScreenProps) {
 
   return (
     <SafeAreaView className="flex-1 bg-app-background">
-      <View className="pointer-events-none absolute -right-24 -top-20 h-72 w-72 rounded-full bg-app-primary/12" />
-      <View className="pointer-events-none absolute -left-20 top-72 h-60 w-60 rounded-full bg-app-primary/10" />
+      <View className="pointer-events-none absolute -right-20 -top-12 h-80 w-80 rounded-full bg-app-primary/18" />
+      <View className="pointer-events-none absolute -left-24 top-[36%] h-64 w-64 rounded-full bg-app-primary/10" />
+      <View className="pointer-events-none absolute -right-28 bottom-20 h-72 w-72 rounded-full bg-app-primary/14" />
 
       <ScrollView
         className="flex-1"
@@ -48,7 +49,7 @@ export function ProfileDetailsScreen({ profileId }: ProfileDetailsScreenProps) {
           <ProfileInformationTab profile={profile} />
         )}
 
-        <Text className="mt-2 text-center text-xs text-app-muted">
+        <Text className="mt-3 text-center text-xs text-app-muted">
           {PROFILE_DETAILS_COPY.HEADER_TITLE}
         </Text>
       </ScrollView>
