@@ -1,10 +1,10 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider, type Theme } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 import 'react-native-reanimated';
 import '../global.css';
 import { vars } from 'nativewind';
@@ -55,6 +55,8 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const { theme, palette } = useAppTheme();
   const activeTokens = tokens.resolveTokens(theme, palette);
+  const isFrost = theme === 'frost';
+  const isNavigationDark = theme === 'dark';
   const themeVars = vars({
     'app-background': hexToRgb(activeTokens.background),
     'app-foreground': hexToRgb(activeTokens.foreground),
@@ -63,12 +65,49 @@ function RootLayoutNav() {
     'app-muted': hexToRgb(activeTokens.muted),
     'app-primary': hexToRgb(activeTokens.primary),
   });
+  const navigationTheme: Theme = {
+    ...(isNavigationDark ? DarkTheme : DefaultTheme),
+    colors: {
+      ...(isNavigationDark ? DarkTheme.colors : DefaultTheme.colors),
+      primary: activeTokens.primary,
+      background: activeTokens.background,
+      card: activeTokens.card,
+      text: activeTokens.text,
+      border: activeTokens.border,
+      notification: activeTokens.primary,
+    },
+  };
+  //const frostBackgroundSource = require('../assets/images/bg_glass1.jpg');
 
   return (
     <View style={themeVars} className="flex-1">
+      {isFrost ? (
+        <>
+          {/* <Image
+            source={frostBackgroundSource}
+            className="absolute inset-0 h-full w-full opacity-50"
+            resizeMode="cover"
+          /> */}
+          <View className="absolute -left-16 -top-12 h-80 w-80 rounded-full bg-cyan-300/30" />
+          <View className="absolute -right-20 top-36 h-96 w-96 rounded-full bg-violet-300/24" />
+          <View className="absolute bottom-0 left-4 h-80 w-80 rounded-full bg-app-primary/24" />
+          <View
+            className="absolute left-[-30] top-[32%] h-52 w-[130%] bg-white/8"
+            style={{ transform: [{ rotate: '-10deg' }] }}
+          />
+          <View
+            pointerEvents="none"
+            className="absolute inset-0"
+            style={{ backgroundColor: 'rgba(5, 8, 18, 0.28)' }}
+          />
+        </>
+      ) : null}
       <AuthProvider>
-        <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
+        <ThemeProvider value={navigationTheme}>
+          <Stack
+            screenOptions={{
+              contentStyle: { backgroundColor: isFrost ? 'transparent' : activeTokens.background },
+            }}>
             <Stack.Screen name="landing" options={{ headerShown: false }} />
             <Stack.Screen name="register" options={{ headerShown: false }} />
             <Stack.Screen name="(register-flow)" options={{ headerShown: false }} />

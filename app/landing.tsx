@@ -2,7 +2,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, Pressable, Text, View } from 'react-native';
+import { Animated, Easing, Platform, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppTheme } from '@/components/theme/useAppTheme';
@@ -15,6 +15,7 @@ const HERO_IMAGES = [
 
 export default function LandingScreen() {
   const { theme } = useAppTheme();
+  const shouldUseNativeDriver = Platform.OS !== 'web';
   const glowAnim = useRef(new Animated.Value(0.55)).current;
   const contentAnim = useRef(new Animated.Value(0)).current;
   const driftAnim = useRef(new Animated.Value(0)).current;
@@ -33,13 +34,13 @@ export default function LandingScreen() {
           toValue: 1,
           duration: 2800,
           easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(driftAnim, {
           toValue: 0,
           duration: 2800,
           easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     ).start();
@@ -49,7 +50,7 @@ export default function LandingScreen() {
         toValue: 1,
         duration: 18000,
         easing: Easing.linear,
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       })
     ).start();
 
@@ -58,12 +59,12 @@ export default function LandingScreen() {
         Animated.timing(glowAnim, {
           toValue: 0.95,
           duration: 1700,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(glowAnim, {
           toValue: 0.55,
           duration: 1700,
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     ).start();
@@ -74,13 +75,13 @@ export default function LandingScreen() {
           toValue: 1,
           duration: 3600,
           easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
         Animated.timing(heartAnim, {
           toValue: 0,
           duration: 3600,
           easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         }),
       ])
     ).start();
@@ -89,7 +90,7 @@ export default function LandingScreen() {
       toValue: 1,
       duration: 800,
       easing: Easing.out(Easing.cubic),
-      useNativeDriver: true,
+      useNativeDriver: shouldUseNativeDriver,
     }).start();
 
     const timer = setInterval(() => {
@@ -103,12 +104,12 @@ export default function LandingScreen() {
         toValue: 1,
         duration: 900,
         easing: Easing.out(Easing.cubic),
-        useNativeDriver: true,
+        useNativeDriver: shouldUseNativeDriver,
       }).start();
     }, 4200);
 
     return () => clearInterval(timer);
-  }, [contentAnim, driftAnim, glowAnim, heartAnim, imageTransition, spinAnim]);
+  }, [contentAnim, driftAnim, glowAnim, heartAnim, imageTransition, shouldUseNativeDriver, spinAnim]);
 
   const contentTranslate = contentAnim.interpolate({
     inputRange: [0, 1],
@@ -201,7 +202,7 @@ export default function LandingScreen() {
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={16}
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
-          useNativeDriver: true,
+          useNativeDriver: shouldUseNativeDriver,
         })}>
         <Animated.View style={{ opacity: contentAnim, transform: [{ translateY: contentTranslate }] }}>
           <View className="mt-3 self-start rounded-full border border-app-border bg-app-card/90 px-4 py-2">
@@ -300,13 +301,7 @@ export default function LandingScreen() {
 
               <View className="absolute bottom-20 left-5 right-5">
                 <Animated.View className="relative self-start items-start" style={{ transform: [{ scale: titleScale }, { translateY: titleTranslateY }] }}>
-                  <Text
-                    className="text-[36px] font-black leading-[40px] tracking-[0.2px] text-orange-100"
-                    style={{
-                      textShadowColor: 'rgba(0, 0, 0, 0.45)',
-                      textShadowOffset: { width: 0, height: 1 },
-                      textShadowRadius: 6,
-                    }}>
+                  <Text className="text-[36px] font-black leading-[40px] tracking-[0.2px] text-orange-100">
                     Suyamvaram
                   </Text>
                   <Animated.View

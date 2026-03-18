@@ -15,7 +15,10 @@ const listeners = new Set<() => void>();
 let hydrated = false;
 let currentTheme: Theme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 let currentPalette: ThemePalette = tokens.defaultPalette;
-let snapshot = { theme: currentTheme, palette: currentPalette };
+let snapshot: { theme: Theme; palette: ThemePalette } = {
+  theme: currentTheme,
+  palette: currentPalette,
+};
 
 function updateSnapshot() {
   snapshot = { theme: currentTheme, palette: currentPalette };
@@ -103,6 +106,11 @@ export function useAppTheme() {
     palette: state.palette,
     setTheme,
     setPalette,
-    toggleTheme: () => setTheme(state.theme === 'dark' ? 'light' : 'dark'),
+    toggleTheme: () => {
+      const themeOrder: Theme[] = ['light', 'dark', 'frost'];
+      const currentIndex = themeOrder.indexOf(state.theme);
+      const nextTheme = themeOrder[(currentIndex + 1) % themeOrder.length];
+      setTheme(nextTheme);
+    },
   };
 }

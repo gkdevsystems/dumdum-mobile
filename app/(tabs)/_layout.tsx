@@ -18,10 +18,11 @@ function TabBarIcon(props: {
   return <FontAwesome size={22} style={{ marginBottom: 0 }} {...props} />;
 }
 
-function BrandHeaderTitle() {
+function BrandHeaderTitle({ isFrost }: { isFrost: boolean }) {
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 4 }}>
-      <View className="size-10 items-center justify-center overflow-hidden rounded-xl border border-app-border bg-app-card">
+      <View
+        className={`size-10 items-center justify-center overflow-hidden rounded-xl border border-app-border ${isFrost ? 'bg-app-card/45' : 'bg-app-card'}`}>
         <Image
           source={require('../../assets/images/bg1.png')}
           style={{ width: 38, height: 38 }}
@@ -39,9 +40,10 @@ function BrandHeaderTitle() {
   );
 }
 
-function HeaderNotificationButton() {
+function HeaderNotificationButton({ isFrost }: { isFrost: boolean }) {
   return (
-    <Pressable className="mr-2 size-9 items-center justify-center rounded-full border border-app-border bg-app-card">
+    <Pressable
+      className={`mr-2 size-9 items-center justify-center rounded-full border border-app-border ${isFrost ? 'bg-app-card/45' : 'bg-app-card'}`}>
       <FontAwesome name="bell-o" size={16} color="rgb(var(--app-foreground))" />
       <View className="absolute right-2 top-2 size-2 rounded-full bg-app-primary" />
     </Pressable>
@@ -51,6 +53,7 @@ function HeaderNotificationButton() {
 export default function TabLayout() {
   const { theme, palette } = useAppTheme();
   const activeTokens = tokens.resolveTokens(theme, palette);
+  const isFrost = theme === 'frost';
   const { token, isLoading } = useAuth();
   const insets = useSafeAreaInsets();
 
@@ -77,22 +80,30 @@ export default function TabLayout() {
         tabBarActiveTintColor: activeTokens.tint,
         tabBarInactiveTintColor: activeTokens.tabIconDefault,
         tabBarStyle: {
-          backgroundColor: activeTokens.card,
+          backgroundColor: isFrost ? 'rgba(18, 30, 54, 0.56)' : activeTokens.card,
           borderTopColor: activeTokens.border,
           borderTopWidth: 1,
           height: 62 + Math.max(insets.bottom, 8),
           paddingTop: 6,
           paddingBottom: Math.max(insets.bottom, 8),
+          shadowColor: isFrost ? '#000000' : '#000000',
+          shadowOpacity: isFrost ? 0 : 0.1,
+          shadowRadius: isFrost ? 0 : 6,
+          shadowOffset: { width: 0, height: -4 },
+          elevation: isFrost ? 0 : 6,
         },
         tabBarItemStyle: { paddingVertical: 4 },
         tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
         headerStyle: {
-          backgroundColor: activeTokens.card,
+          backgroundColor: isFrost ? 'rgba(16, 26, 48, 0.54)' : activeTokens.card,
         },
         headerShadowVisible: true,
         headerTitleStyle: { fontWeight: '700' },
         headerTitleAlign: 'left',
         headerTintColor: activeTokens.text,
+        sceneStyle: {
+          backgroundColor: isFrost ? 'transparent' : activeTokens.background,
+        },
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
@@ -102,8 +113,8 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerTitle: () => <BrandHeaderTitle />,
-          headerRight: () => <HeaderNotificationButton />,
+          headerTitle: () => <BrandHeaderTitle isFrost={isFrost} />,
+          headerRight: () => <HeaderNotificationButton isFrost={isFrost} />,
         }}
       />
       <Tabs.Screen

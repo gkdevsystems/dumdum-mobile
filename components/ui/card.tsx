@@ -1,13 +1,18 @@
 import { Text, TextClassContext } from '@/components/ui/text';
+import { useAppTheme } from '@/components/theme/useAppTheme';
 import { cn } from '@/lib/utils';
 import { View, type ViewProps } from 'react-native';
 
 function Card({ className, ...props }: ViewProps & React.RefAttributes<View>) {
+  const { theme } = useAppTheme();
+  const isFrost = theme === 'frost';
+
   return (
     <TextClassContext.Provider value="text-card-foreground">
       <View
         className={cn(
           'bg-card border-border flex flex-col gap-6 rounded-xl border py-6 shadow-sm shadow-black/5',
+          isFrost && 'bg-app-card/42 border-white/38 shadow-none',
           className
         )}
         {...props}

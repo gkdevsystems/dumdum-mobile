@@ -15,4 +15,11 @@ export default {
     tabIconDefault: tokens.dark.tabIconDefault,
     tabIconSelected: tokens.dark.tabIconSelected,
   },
+  frost: {
+    text: tokens.frost.text,
+    background: tokens.frost.background,
+    tint: tokens.frost.tint,
+    tabIconDefault: tokens.frost.tabIconDefault,
+    tabIconSelected: tokens.frost.tabIconSelected,
+  },
 };

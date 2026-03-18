@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useAppTheme } from '@/components/theme/useAppTheme';
 import { Text } from '@/components/ui/text';
 import { DashboardSearch } from '@/features/dashboard/components/dashboard-search';
 import { FeedTabs } from '@/features/dashboard/components/feed-tabs';
@@ -18,6 +19,8 @@ import type { DashboardProfile } from '@/shared/dashboard/types';
 const PROFILE_PAGE_SIZE = 6;
 
 export function DashboardHomeScreen() {
+  const { theme } = useAppTheme();
+  const isFrost = theme === 'frost';
   const data = mockDashboard;
   const defaultTab = useMemo(() => data.feedTabs[0]?.id ?? 'recommended', [data.feedTabs]);
   const [activeFeedTab, setActiveFeedTab] = useState(defaultTab);
@@ -48,7 +51,9 @@ export function DashboardHomeScreen() {
   );
 
   return (
-    <SafeAreaView edges={['left', 'right']} className="flex-1 bg-app-background">
+    <SafeAreaView
+      edges={['left', 'right']}
+      className={`flex-1 ${isFrost ? 'bg-transparent' : 'bg-app-background'}`}>
       <FlatList
         data={visibleProfiles}
         keyExtractor={(item) => item.id}
@@ -56,7 +61,7 @@ export function DashboardHomeScreen() {
         onEndReached={loadMoreProfiles}
         onEndReachedThreshold={0.35}
         ListHeaderComponent={
-          <View className="px-4 pb-2 pt-4">
+          <View className="pb-2 pt-4">
             <DashboardSearch placeholder={data.searchPlaceholder} />
             <TopMatchCard data={data.topMatch} />
             <QuickStatsGrid cards={data.quickStats} />
@@ -68,7 +73,7 @@ export function DashboardHomeScreen() {
           </View>
         }
         ListFooterComponent={
-          <View className="px-4 pb-28 pt-1">
+          <View className="pb-28 pt-1">
             {isLoadingMore ? (
               <Text className="text-center text-sm text-app-muted">Loading more profiles...</Text>
             ) : (
@@ -78,7 +83,7 @@ export function DashboardHomeScreen() {
             )}
           </View>
         }
-        contentContainerClassName="pb-2"
+        contentContainerClassName="px-4 pb-2"
       />
     </SafeAreaView>
   );

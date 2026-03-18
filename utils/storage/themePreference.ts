@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export type ThemePreference = 'light' | 'dark';
+export type ThemePreference = 'light' | 'dark' | 'frost';
 export type ThemePalette = 'rose' | 'ocean' | 'mint';
 
 const THEME_PREFERENCE_KEY = '@suyamvaram/theme-preference';
 const THEME_PALETTE_KEY = '@suyamvaram/theme-palette';
 
 function isThemePreference(value: string): value is ThemePreference {
-  return value === 'light' || value === 'dark';
+  return value === 'light' || value === 'dark' || value === 'frost';
 }
 
 function isThemePalette(value: string): value is ThemePalette {

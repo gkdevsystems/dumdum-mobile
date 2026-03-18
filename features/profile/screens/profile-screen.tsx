@@ -11,10 +11,15 @@ const paletteOptions = [
   { value: 'mint', label: 'Mint Calm', dotClass: 'bg-emerald-500' },
 ] as const;
 
+const themeOptions = [
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+  { value: 'frost', label: 'Frost Glass' },
+] as const;
+
 export function ProfileScreen() {
   const { theme, setTheme, palette, setPalette } = useAppTheme();
   const { signOut } = useAuth();
-  const isDark = theme === 'dark';
 
   const handleLogout = async () => {
     await signOut();
@@ -29,20 +34,19 @@ export function ProfileScreen() {
         <View className="mb-4 rounded-2xl border border-app-border bg-app-card p-4">
           <Text className="text-base font-semibold text-app-foreground">Theme</Text>
           <View className="mt-3 flex-row gap-2">
-            <Pressable
-              className={`flex-1 rounded-xl border px-4 py-3 ${!isDark ? 'border-app-primary bg-app-primary/10' : 'border-app-border bg-app-card'}`}
-              onPress={() => setTheme('light')}>
-              <Text className={`text-center font-medium ${!isDark ? 'text-app-primary' : 'text-app-foreground'}`}>
-                Light
-              </Text>
-            </Pressable>
-            <Pressable
-              className={`flex-1 rounded-xl border px-4 py-3 ${isDark ? 'border-app-primary bg-app-primary/10' : 'border-app-border bg-app-card'}`}
-              onPress={() => setTheme('dark')}>
-              <Text className={`text-center font-medium ${isDark ? 'text-app-primary' : 'text-app-foreground'}`}>
-                Dark
-              </Text>
-            </Pressable>
+            {themeOptions.map((option) => {
+              const selected = theme === option.value;
+              return (
+                <Pressable
+                  key={option.value}
+                  className={`flex-1 rounded-xl border px-2 py-3 ${selected ? 'border-app-primary bg-app-primary/10' : 'border-app-border bg-app-card'}`}
+                  onPress={() => setTheme(option.value)}>
+                  <Text className={`text-center text-[13px] font-medium ${selected ? 'text-app-primary' : 'text-app-foreground'}`}>
+                    {option.label}
+                  </Text>
+                </Pressable>
+              );
+            })}
           </View>
         </View>
 
@@ -73,7 +77,7 @@ export function ProfileScreen() {
         </View>
 
         <Text className="mt-3 text-sm text-app-muted">
-          Current theme: {isDark ? 'Dark' : 'Light'} | Aura:{' '}
+          Current theme: {themeOptions.find((item) => item.value === theme)?.label} | Aura:{' '}
           {paletteOptions.find((item) => item.value === palette)?.label}
         </Text>
 
@@ -86,4 +90,3 @@ export function ProfileScreen() {
     </SafeAreaView>
   );
 }
-

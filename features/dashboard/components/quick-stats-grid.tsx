@@ -1,6 +1,7 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Pressable, View } from 'react-native';
 
+import { useAppTheme } from '@/components/theme/useAppTheme';
 import { Card } from '@/components/ui/card';
 import { Text } from '@/components/ui/text';
 import type { QuickStatCard } from '@/shared/dashboard/types';
@@ -17,22 +18,43 @@ type QuickStatsGridProps = {
 };
 
 function StatCard({ item }: { item: QuickStatCard }) {
+  const { theme } = useAppTheme();
+  const isFrost = theme === 'frost';
   const tone = toneStyles[item.tone];
 
   return (
-    <Card className={`min-h-40 flex-1 rounded-3xl border-0 p-4 ${tone.card}`}>
-      <View className="mb-2">
-        <View className="size-8 items-center justify-center rounded-full bg-white/20">
-          <FontAwesome name={tone.icon as any} size={12} color={tone.accent} />
+    <Card
+      className={`min-h-24 flex-1 rounded-3xl p-2.5 ${isFrost ? 'border-white/50 bg-app-card/62' : `border-0 ${tone.card}`}`}>
+      <View className="mb-1.5">
+        <View
+          className={`size-7 items-center justify-center rounded-full ${isFrost ? 'bg-app-primary/15' : 'bg-white/20'}`}>
+          <FontAwesome
+            name={tone.icon as any}
+            size={11}
+            color={isFrost ? 'rgb(var(--app-primary))' : tone.accent}
+          />
         </View>
       </View>
-      <Text className="text-sm font-bold text-white">{item.title}</Text>
-      <Text className="mt-1 text-[11px] text-white/85">{item.subtitle}</Text>
-      <Text className="mt-2 text-5xl font-black text-white">{item.value}</Text>
-      {item.accentLabel ? <Text className="mt-1 text-xs font-semibold text-white/90">{item.accentLabel}</Text> : null}
+      <Text numberOfLines={1} className={`text-[13px] font-bold ${isFrost ? 'text-app-foreground' : 'text-white'}`}>
+        {item.title}
+      </Text>
+      <Text numberOfLines={1} className={`mt-0.5 text-[10px] ${isFrost ? 'text-app-muted' : 'text-white/85'}`}>
+        {item.subtitle}
+      </Text>
+      <Text className={`mt-1 text-3xl font-black ${isFrost ? 'text-app-foreground' : 'text-white'}`}>
+        {item.value}
+      </Text>
+      {item.accentLabel ? (
+        <Text className={`mt-0.5 text-[10px] font-semibold ${isFrost ? 'text-app-primary' : 'text-white/90'}`}>
+          {item.accentLabel}
+        </Text>
+      ) : null}
       {item.ctaLabel ? (
-        <Pressable className="mt-2 self-start rounded-full bg-white/25 px-2.5 py-1">
-          <Text className="text-[10px] font-semibold text-white">{item.ctaLabel}</Text>
+        <Pressable
+          className={`mt-1 self-start rounded-full px-1.5 py-0.5 ${isFrost ? 'bg-app-primary/12' : 'bg-white/25'}`}>
+          <Text className={`text-[9px] font-semibold ${isFrost ? 'text-app-primary' : 'text-white'}`}>
+            {item.ctaLabel}
+          </Text>
         </Pressable>
       ) : null}
     </Card>
@@ -44,13 +66,13 @@ export function QuickStatsGrid({ cards }: QuickStatsGridProps) {
   const secondRow = cards.slice(2, 4);
 
   return (
-    <View className="mb-5 gap-3">
-      <View className="flex-row gap-3">
+    <View className="mb-5 gap-2.5">
+      <View className="flex-row gap-2.5">
         {firstRow.map((item) => (
           <StatCard key={item.id} item={item} />
         ))}
       </View>
-      <View className="flex-row gap-3">
+      <View className="flex-row gap-2.5">
         {secondRow.map((item) => (
           <StatCard key={item.id} item={item} />
         ))}

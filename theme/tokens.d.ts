@@ -1,4 +1,4 @@
-export type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light' | 'dark' | 'frost';
 export type ThemePalette = 'rose' | 'ocean' | 'mint';
 
 export type ThemeTokenSet = {
@@ -17,10 +17,10 @@ export type ThemeTokenSet = {
 declare const tokens: {
   light: ThemeTokenSet;
   dark: ThemeTokenSet;
+  frost: ThemeTokenSet;
   palettes: Record<ThemePalette, Record<ThemeMode, ThemeTokenSet>>;
   defaultPalette: ThemePalette;
   resolveTokens: (mode?: ThemeMode, palette?: ThemePalette) => ThemeTokenSet;
 };
 
 export default tokens;
-
