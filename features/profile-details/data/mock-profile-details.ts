@@ -17,6 +17,9 @@ function buildPosts(profileId: string): ProfilePost[] {
       caption: 'Sunday morning filter coffee and a long read.',
       mediaUri:
         'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=1600',
+      locationLabel: 'Mylapore, Chennai',
+      vibeLabel: 'Calm Morning',
+      tags: ['Family Values', 'Simple Joys', 'Books'],
       createdAtLabel: '2 days ago',
       likeCount: 84,
       commentCount: 12,
@@ -27,6 +30,9 @@ function buildPosts(profileId: string): ProfilePost[] {
       caption: 'Tiny glimpse from a recent trek near Coorg.',
       mediaUri:
         'https://images.pexels.com/photos/372098/pexels-photo-372098.jpeg?auto=compress&cs=tinysrgb&w=1600',
+      locationLabel: 'Coorg, Karnataka',
+      vibeLabel: 'Adventure',
+      tags: ['Travel', 'Nature', 'Weekend Ritual'],
       createdAtLabel: '1 week ago',
       likeCount: 126,
       commentCount: 19,
@@ -35,6 +41,8 @@ function buildPosts(profileId: string): ProfilePost[] {
       id: `${profileId}-p3`,
       type: 'quote',
       caption: QUOTES[profileId.length % QUOTES.length],
+      vibeLabel: 'Relationship Mindset',
+      tags: ['Intentional', 'Marriage', 'Respect'],
       createdAtLabel: '2 weeks ago',
       likeCount: 63,
       commentCount: 8,

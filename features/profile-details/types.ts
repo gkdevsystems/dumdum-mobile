@@ -7,6 +7,9 @@ export type ProfilePost = {
   type: ProfilePostType;
   caption: string;
   mediaUri?: string;
+  locationLabel?: string;
+  vibeLabel?: string;
+  tags: string[];
   createdAtLabel: string;
   likeCount: number;
   commentCount: number;

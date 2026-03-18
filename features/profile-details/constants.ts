@@ -1,9 +1,20 @@
 export const PROFILE_DETAILS_COPY = {
   HEADER_TITLE: 'Profile Portfolio',
   HEADER_SUBTITLE: 'A living story beyond biodata.',
+  HEADER_PORTFOLIO: 'Portfolio',
   FEED_TAB: 'Feed',
   INFO_TAB: 'Information',
   FEED_EMPTY: 'No portfolio posts yet.',
+  FEED_INTRO_TITLE: 'Shared Moments',
+  FEED_INTRO_SUBTITLE: 'A blend of lifestyle, values, and relationship intent.',
+  FEED_COMPOSER_PLACEHOLDER: 'If this were your feed, what would you post first?',
+  FEED_FILTER_LIFESTYLE: 'Lifestyle',
+  FEED_FILTER_VALUES: 'Values',
+  FEED_FILTER_FAMILY: 'Family',
+  FEED_FILTER_TRAVEL: 'Travel',
+  FEED_FILTER_BELIEFS: 'Beliefs',
+  POST_TYPE_VIDEO: 'Video Story',
+  POST_TYPE_QUOTE: 'Quote',
   ABOUT_TITLE: 'About',
   HIGHLIGHTS_TITLE: 'Highlights',
   STORY_BLOCK_TITLE: 'Storyline',
@@ -15,6 +26,8 @@ export const PROFILE_DETAILS_COPY = {
   VERIFIED: 'Verified',
   MATCH: 'Match',
   CREATIVE_NOTE: 'Shared through portfolio moments',
+  NOT_FOUND_TITLE: 'Profile not found',
+  NOT_FOUND_SUBTITLE: 'We could not find this profile. Please go back and choose another match.',
 } as const;
 
 export const PROFILE_DETAILS_ACCENT = {

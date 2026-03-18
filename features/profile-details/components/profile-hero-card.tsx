@@ -1,5 +1,5 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Image, View } from 'react-native';
+import { Animated, View } from 'react-native';
 
 import { Text } from '@/components/ui/text';
 import { PROFILE_DETAILS_COPY } from '@/features/profile-details/constants';
@@ -7,13 +7,30 @@ import type { ProfileDetails } from '@/features/profile-details/types';
 
 type ProfileHeroCardProps = {
   profile: ProfileDetails;
+  scrollY: Animated.Value;
 };
 
-export function ProfileHeroCard({ profile }: ProfileHeroCardProps) {
+export function ProfileHeroCard({ profile, scrollY }: ProfileHeroCardProps) {
+  const heroTranslateY = scrollY.interpolate({
+    inputRange: [-240, 0, 220],
+    outputRange: [-65, 0, 35],
+    extrapolate: 'clamp',
+  });
+  const heroScale = scrollY.interpolate({
+    inputRange: [-240, 0],
+    outputRange: [1.24, 1],
+    extrapolateRight: 'clamp',
+  });
+
   return (
     <View className="mb-5 overflow-hidden rounded-[34px] border border-app-border bg-app-card">
       <View className="relative h-[410px]">
-        <Image source={{ uri: profile.imageUri }} className="h-full w-full" resizeMode="cover" />
+        <Animated.Image
+          source={{ uri: profile.imageUri }}
+          className="h-full w-full"
+          resizeMode="cover"
+          style={{ transform: [{ translateY: heroTranslateY }, { scale: heroScale }] }}
+        />
         <View className="absolute inset-0 bg-black/35" />
         <View className="absolute inset-x-0 bottom-0 h-56 bg-black/45" />
 

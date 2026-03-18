@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 
 import { Card } from '@/components/ui/card';
 import { Text } from '@/components/ui/text';
-import { PROFILE_DETAILS_ACCENT } from '@/features/profile-details/constants';
+import { PROFILE_DETAILS_ACCENT, PROFILE_DETAILS_COPY } from '@/features/profile-details/constants';
 import type { ProfilePost } from '@/features/profile-details/types';
 
 type ProfilePostCardProps = {
@@ -16,6 +16,19 @@ export function ProfilePostCard({ post }: ProfilePostCardProps) {
 
   return (
     <Card className="mb-5 overflow-hidden rounded-[30px] border-app-border bg-app-card p-0">
+      <View className="flex-row items-center justify-between px-4 pb-2 pt-4">
+        <View className="flex-row items-center gap-2">
+          <View className="size-8 items-center justify-center rounded-full bg-app-primary/15">
+            <FontAwesome name="heart" size={12} color="rgb(var(--app-primary))" />
+          </View>
+          <View>
+            <Text className="text-sm font-semibold text-app-foreground">{post.vibeLabel ?? PROFILE_DETAILS_COPY.HEADER_PORTFOLIO}</Text>
+            <Text className="text-xs text-app-muted">{post.locationLabel ?? PROFILE_DETAILS_COPY.CREATIVE_NOTE}</Text>
+          </View>
+        </View>
+        <FontAwesome name="ellipsis-h" size={14} color="rgb(var(--app-muted))" />
+      </View>
+
       {post.mediaUri ? (
         <View className="relative h-[320px]">
           <Image source={{ uri: post.mediaUri }} className="h-full w-full" resizeMode="cover" />
@@ -23,7 +36,7 @@ export function ProfilePostCard({ post }: ProfilePostCardProps) {
           <View className="absolute inset-x-0 bottom-0 h-28 bg-black/30" />
           {isVideo ? (
             <View className="absolute right-3 top-3 rounded-full border border-yellow-100/35 bg-black/55 px-2.5 py-1">
-              <Text className="text-[11px] font-semibold text-yellow-100">Video Story</Text>
+              <Text className="text-[11px] font-semibold text-yellow-100">{PROFILE_DETAILS_COPY.POST_TYPE_VIDEO}</Text>
             </View>
           ) : null}
           <View className="absolute bottom-4 left-4 right-4">
@@ -34,13 +47,21 @@ export function ProfilePostCard({ post }: ProfilePostCardProps) {
         <View className="bg-app-primary/10 px-5 py-10">
           <View className="mb-4 flex-row items-center gap-2">
             <FontAwesome name="quote-left" size={14} color={PROFILE_DETAILS_ACCENT.QUOTE} />
-            <Text className="text-xs font-semibold uppercase tracking-[1.5px] text-app-primary">Quote</Text>
+            <Text className="text-xs font-semibold uppercase tracking-[1.5px] text-app-primary">{PROFILE_DETAILS_COPY.POST_TYPE_QUOTE}</Text>
           </View>
           <Text className="text-xl font-semibold leading-9 text-app-foreground">"{post.caption}"</Text>
         </View>
       ) : null}
 
-      {isQuote ? <Text className="px-4 pt-4 text-sm text-app-muted">{post.caption}</Text> : null}
+      <View className="flex-row flex-wrap gap-2 px-4 pt-3">
+        {post.tags.map((tag) => (
+          <View key={tag} className="rounded-full border border-app-border bg-app-primary/10 px-2.5 py-1">
+            <Text className="text-[10px] font-semibold text-app-primary">{tag}</Text>
+          </View>
+        ))}
+      </View>
+
+      {isQuote ? <Text className="px-4 pt-3 text-sm text-app-muted">{post.caption}</Text> : null}
 
       <View className="flex-row items-center justify-between px-4 pb-4 pt-3">
         <View className="rounded-full bg-app-primary/10 px-2.5 py-1">
