@@ -1,9 +1,11 @@
+import { router } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAppTheme } from '@/components/theme/useAppTheme';
 import { Text } from '@/components/ui/text';
+import { APP_ROUTES } from '@/constants/routes';
 import { DashboardSearch } from '@/features/dashboard/components/dashboard-search';
 import { FeedTabs } from '@/features/dashboard/components/feed-tabs';
 import { IcebreakerCard } from '@/features/dashboard/components/icebreaker-card';
@@ -45,9 +47,15 @@ export function DashboardHomeScreen() {
     }, 350);
   }, [data.recommended.length, hasMoreProfiles, isLoadingMore]);
 
+  const handleOpenProfile = useCallback((profileId: string) => {
+    router.push(`${APP_ROUTES.PROFILE_DETAILS_BASE}/${profileId}` as never);
+  }, []);
+
   const renderProfileItem = useCallback(
-    ({ item }: { item: DashboardProfile }) => <RecommendedProfileCard profile={item} />,
-    []
+    ({ item }: { item: DashboardProfile }) => (
+      <RecommendedProfileCard profile={item} onOpenProfile={handleOpenProfile} />
+    ),
+    [handleOpenProfile]
   );
 
   return (
@@ -63,7 +71,7 @@ export function DashboardHomeScreen() {
         ListHeaderComponent={
           <View className="pb-2 pt-4">
             <DashboardSearch placeholder={data.searchPlaceholder} />
-            <TopMatchCard data={data.topMatch} />
+            <TopMatchCard data={data.topMatch} onOpenProfile={handleOpenProfile} />
             <QuickStatsGrid cards={data.quickStats} />
             <IcebreakerCard data={data.icebreaker} />
             <RecentVisitors visitors={data.visitors} />

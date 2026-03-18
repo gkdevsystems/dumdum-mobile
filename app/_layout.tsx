@@ -69,6 +69,7 @@ function RootLayoutNav() {
             <Stack.Screen name="register" options={{ headerShown: false }} />
             <Stack.Screen name="(register-flow)" options={{ headerShown: false }} />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="profile/[profileId]" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
           </Stack>
         </ThemeProvider>

@@ -7,12 +7,13 @@ import type { DashboardProfile } from '@/shared/dashboard/types';
 
 type RecommendedProfileCardProps = {
   profile: DashboardProfile;
+  onOpenProfile?: (profileId: string) => void;
 };
 
-export function RecommendedProfileCard({ profile }: RecommendedProfileCardProps) {
+export function RecommendedProfileCard({ profile, onOpenProfile }: RecommendedProfileCardProps) {
   return (
     <Card className="mb-4 overflow-hidden rounded-3xl border-app-border bg-app-card p-0">
-      <View className="relative h-72">
+      <Pressable className="relative h-72" onPress={() => onOpenProfile?.(profile.id)}>
         <Image source={{ uri: profile.imageUri }} className="h-full w-full" resizeMode="cover" />
         <View className="absolute inset-0 bg-black/25" />
         <View className="absolute left-4 top-4 rounded-full bg-emerald-100 px-3 py-1">
@@ -27,7 +28,7 @@ export function RecommendedProfileCard({ profile }: RecommendedProfileCardProps)
           </Text>
           <Text className="text-sm text-white">{profile.location}</Text>
         </View>
-      </View>
+      </Pressable>
       <View className="gap-2 px-4 py-4">
         <Text className="text-sm font-semibold text-app-foreground">{profile.occupation}</Text>
         <Text className="text-sm text-app-muted">{profile.education}</Text>
@@ -48,4 +49,3 @@ export function RecommendedProfileCard({ profile }: RecommendedProfileCardProps)
     </Card>
   );
 }
-

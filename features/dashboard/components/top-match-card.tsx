@@ -8,9 +8,10 @@ import type { TopMatch } from '@/shared/dashboard/types';
 
 type TopMatchCardProps = {
   data: TopMatch;
+  onOpenProfile?: (profileId: string) => void;
 };
 
-export function TopMatchCard({ data }: TopMatchCardProps) {
+export function TopMatchCard({ data, onOpenProfile }: TopMatchCardProps) {
   const profile = data.profile;
   const { theme } = useAppTheme();
   const isFrost = theme === 'frost';
@@ -47,7 +48,9 @@ export function TopMatchCard({ data }: TopMatchCardProps) {
           </View>
         </View>
 
-        <View className={`rounded-2xl p-2 ${isFrost ? 'bg-white/35' : 'bg-white/10'}`}>
+        <Pressable
+          className={`rounded-2xl p-2 ${isFrost ? 'bg-white/35' : 'bg-white/10'}`}
+          onPress={() => onOpenProfile?.(profile.id)}>
           <View className="flex-row gap-3">
             <Image source={{ uri: profile.imageUri }} className="h-20 w-20 rounded-xl" />
             <View className="flex-1">
@@ -75,11 +78,12 @@ export function TopMatchCard({ data }: TopMatchCardProps) {
               </View>
             </View>
           </View>
-        </View>
+        </Pressable>
 
         <View className="mt-3 flex-row items-center gap-2">
           <Pressable
-            className={`h-12 flex-1 items-center justify-center rounded-2xl ${isFrost ? 'bg-app-primary' : 'bg-white'}`}>
+            className={`h-12 flex-1 items-center justify-center rounded-2xl ${isFrost ? 'bg-app-primary' : 'bg-white'}`}
+            onPress={() => onOpenProfile?.(profile.id)}>
             <Text className={`font-bold ${isFrost ? 'text-white' : 'text-app-primary'}`}>
               {data.ctaLabel}
             </Text>

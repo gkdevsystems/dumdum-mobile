@@ -4,4 +4,5 @@ export const APP_ROUTES = {
   REGISTER: '/register',
   REGISTER_FLOW_MOBILE: '/(register-flow)/mobile',
   TABS: '/(tabs)',
+  PROFILE_DETAILS_BASE: '/profile',
 } as const;
