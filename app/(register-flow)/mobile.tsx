@@ -25,7 +25,7 @@ export default function MobileScreen() {
       title="Let us start with your number"
       subtitle="We will verify your mobile number before moving to profile details."
       step={1}
-      totalSteps={6}
+      totalSteps={7}
       footer={
         <StepFooter
           onNext={() => {

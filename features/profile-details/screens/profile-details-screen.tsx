@@ -69,18 +69,18 @@ export function ProfileDetailsScreen({ profileId }: ProfileDetailsScreenProps) {
 
       <Animated.ScrollView
         className="flex-1"
-        contentContainerClassName="px-4 pb-20 pt-0"
+        contentContainerClassName="pb-20 pt-0"
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
           useNativeDriver: shouldUseNativeDriver,
         })}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
         <ProfileHeroCard profile={profile} scrollY={scrollY} />
-        <View className="px-1">
+        <View className="px-5">
           <ProfileTabSwitcher value={activeTab} onChange={setActiveTab} />
 
           {activeTab === 'feed' ? (
-            <ProfileFeedTab posts={profile.posts} />
+            <ProfileFeedTab profile={profile} />
           ) : (
             <ProfileInformationTab profile={profile} />
           )}

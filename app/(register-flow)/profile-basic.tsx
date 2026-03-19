@@ -39,7 +39,7 @@ export default function ProfileBasicScreen() {
       title="Basic Profile"
       subtitle="Set core details of the person this profile is created for."
       step={3}
-      totalSteps={6}
+      totalSteps={7}
       footer={
         <StepFooter
           onBack={() => {

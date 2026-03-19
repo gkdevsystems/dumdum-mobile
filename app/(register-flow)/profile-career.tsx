@@ -35,7 +35,7 @@ export default function ProfileCareerScreen() {
       title="Residence, Education & Career"
       subtitle="Add residency and career details used for final profile publishing."
       step={5}
-      totalSteps={6}
+      totalSteps={7}
       footer={
         <StepFooter
           onBack={() => {
@@ -45,8 +45,8 @@ export default function ProfileCareerScreen() {
           onNext={() => {
             setShowErrors(true);
             if (!canContinue) return;
-            setActiveStep('review-submit');
-            router.push('/(register-flow)/review-submit');
+            setActiveStep('profile-location');
+            router.push('/(register-flow)/profile-location');
           }}
         />
       }>

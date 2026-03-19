@@ -41,7 +41,7 @@ export default function OtpScreen() {
       title="Enter OTP"
       subtitle={`We sent a verification code to ${maskedNumber}.`}
       step={2}
-      totalSteps={6}
+      totalSteps={7}
       footer={
         <StepFooter
           onBack={() => {

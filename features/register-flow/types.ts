@@ -42,6 +42,9 @@ export type RegistrationDraft = {
   annualIncome: string;
   familyStatus: string;
   about: string;
+  locationSummary: string;
+  mapLatitude: number | null;
+  mapLongitude: number | null;
 };
 
 export const REGISTRATION_STEPS = [
@@ -50,6 +53,7 @@ export const REGISTRATION_STEPS = [
   'profile-basic',
   'profile-religion',
   'profile-career',
+  'profile-location',
   'review-submit',
 ] as const;
 

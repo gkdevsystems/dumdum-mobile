@@ -74,15 +74,15 @@ export default function ReviewSubmitScreen() {
     <ScreenShell
       title="Review & Submit"
       subtitle="Review your details. On submit, this payload is ready to be sent to API."
-      step={6}
-      totalSteps={6}
+      step={7}
+      totalSteps={7}
       footer={
         <View className="flex-row gap-3">
           <Button
             className="flex-1 rounded-2xl border-app-border bg-app-card"
             variant="outline"
             onPress={() => {
-              setActiveStep('profile-career');
+              setActiveStep('profile-location');
               router.back();
             }}>
             <Text className="text-center text-sm font-semibold text-app-foreground">Back</Text>
@@ -126,6 +126,9 @@ export default function ReviewSubmitScreen() {
         <Row label="Annual income" value={payloadPreview.annualIncome} />
         <Row label="Family status" value={payloadPreview.familyStatus} />
         <Row label="About" value={payloadPreview.about} />
+        <Row label="Location summary" value={payloadPreview.locationSummary} />
+        <Row label="Map latitude" value={String(payloadPreview.mapLatitude ?? '-')} />
+        <Row label="Map longitude" value={String(payloadPreview.mapLongitude ?? '-')} />
       </View>
     </ScreenShell>
   );

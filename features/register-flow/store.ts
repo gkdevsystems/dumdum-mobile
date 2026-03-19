@@ -42,6 +42,9 @@ const initialDraft: RegistrationDraft = {
   annualIncome: '',
   familyStatus: '',
   about: '',
+  locationSummary: '',
+  mapLatitude: null,
+  mapLongitude: null,
 };
 
 const sanitize = (value: string) => value.replace(/\s+/g, ' ').trimStart();

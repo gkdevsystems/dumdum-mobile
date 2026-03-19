@@ -222,3 +222,30 @@ export function validateCareerStep(draft: CareerDraft): RegisterValidationErrors
 
   return errors;
 }
+
+type LocationDraft = {
+  locationSummary: string;
+  mapLatitude: number | null;
+  mapLongitude: number | null;
+};
+
+export function validateLocationStep(draft: LocationDraft): RegisterValidationErrors {
+  const errors: RegisterValidationErrors = {};
+
+  withError(
+    errors,
+    'locationSummary',
+    draft.locationSummary.trim().length < 3,
+    'Please share a high-level locality or neighborhood.'
+  );
+
+  if (
+    draft.mapLatitude !== null &&
+    draft.mapLongitude !== null &&
+    (Number.isNaN(draft.mapLatitude) || Number.isNaN(draft.mapLongitude))
+  ) {
+    errors.mapLocation = 'Please place a valid pin on the map.';
+  }
+
+  return errors;
+}

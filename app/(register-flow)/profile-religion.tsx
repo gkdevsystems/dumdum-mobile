@@ -39,7 +39,7 @@ export default function ProfileReligionScreen() {
       title="Religion & Preferences"
       subtitle="Capture religion, caste and horoscope details."
       step={4}
-      totalSteps={6}
+      totalSteps={7}
       footer={
         <StepFooter
           onBack={() => {

@@ -23,7 +23,7 @@ export function ProfileHeroCard({ profile, scrollY }: ProfileHeroCardProps) {
   });
 
   return (
-    <View className="mb-5 overflow-hidden rounded-[34px] border border-app-border bg-app-card">
+    <View className="mb-5 overflow-hidden rounded-b-[34px] border-b border-app-border bg-app-card">
       <View className="relative h-[410px]">
         <Animated.Image
           source={{ uri: profile.imageUri }}

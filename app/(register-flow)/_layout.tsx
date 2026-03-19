@@ -8,8 +8,8 @@ export default function RegisterFlowLayout() {
       <Stack.Screen name="profile-basic" />
       <Stack.Screen name="profile-religion" />
       <Stack.Screen name="profile-career" />
+      <Stack.Screen name="profile-location" />
       <Stack.Screen name="review-submit" />
     </Stack>
   );
 }
-
